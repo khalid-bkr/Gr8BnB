@@ -10,9 +10,12 @@ import bnb.dal.UserDao;
 import bnb.model.User;
 
 import bnb.dal.CalendarDao;
+import bnb.dal.ListingRatingDao;
 import bnb.model.Calendar;
 
 
+import bnb.model.ListingRating;
+import java.util.List;
 
 
 /**
@@ -46,6 +49,7 @@ public class Inserter {
 		u3.getId(), u3.getName(), u3.getUserName());
 
 		CalendarDao calendarDao = CalendarDao.getInstance();
+    ListingRatingDao listingRatingDao = ListingRatingDao.getInstance();
 		
 		// TODO: Change constructor to account for an extra Listing object once Listing is defined.
 		Calendar calendar = new Calendar(0, new Date(0), false, new BigDecimal(123), new BigDecimal(125), 5, 30);
@@ -56,5 +60,26 @@ public class Inserter {
 		System.out.println(calendarDao.getCalendarByListingID(2318));
 		
 		calendar = calendarDao.delete(calendar);
-	}
+
+
+    // TODO: doesn't work yet, depends on Listing and Host tables, and replace below accordingly
+    // Create
+    ListingRating listingRating; int listingId, hostId;
+//    listingRating = new ListingRating(2318, 2536, ListingRating.ScoreType.Rating, 0.1);
+//    System.out.println("Before Insert: " + listingRating);  // 0.1 rating for differentiation here
+//    listingRating = listingRatingDao.create(listingRating);  // created with ID generated
+//    System.out.println("After Insert: " + listingRating);
+    // Read
+//    listingId = 2318;
+//    listingRating = listingRatingDao.getListingRatingById(listingRating.getListingId());
+//    System.out.println(listingRating);
+//    List<ListingRating> listingRatings = listingRatingDao.getListRatingByListingId(listingId);
+//    for (ListingRating lr : listingRatings) System.out.println(lr);
+    // Update
+//    System.out.println("Before Update: " + listingRating);
+//    listingRating = listingRatingDao.updateListRating(listingRating, 5.1);
+//    System.out.println("After Update: " + listingRating);  // 5.1 rating for differentiation
+    // Delete
+//    listingRatingDao.delete(listingRating);
+  }
 }
