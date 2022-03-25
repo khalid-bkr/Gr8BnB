@@ -149,6 +149,36 @@ public class HostRatingDao {
     return hostRatings;
   }
 
+  public HostRating updateHostRatingRating(HostRating hostRating, double newRating)
+      throws SQLException {
+    String updateHostRating =
+        "UPDATE HostRating "
+            + "SET Rating=? "
+            + "WHERE ID=?;";
+
+    Connection connection = null;
+    PreparedStatement selectStmt = null;
+    ResultSet resultSet = null;
+    try {
+      connection = connectionManager.getConnection();
+      selectStmt = connection.prepareStatement(updateHostRating);
+      selectStmt.setInt(1, hostRating.getId());
+
+      selectStmt.executeUpdate();
+      return hostRating;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      throw e;
+    } finally {
+      if (connection != null) {
+        connection.close();
+      }
+      if (selectStmt != null) {
+        selectStmt.close();
+      }
+    }
+  }
+
   public HostRating delete(HostRating hostRating) throws SQLException {
     String deleteHostRating = "DELETE FROM HostRating WHERE ID=?;";
 
