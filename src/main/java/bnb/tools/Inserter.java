@@ -11,11 +11,15 @@ import bnb.model.User;
 import bnb.dal.CalendarDao;
 import bnb.dal.HostDao;
 import bnb.dal.ListingRatingDao;
+import bnb.dal.NeighborhoodDao;
 import bnb.model.Calendar;
 import bnb.model.Host;
 import bnb.model.ListingRating;
 
+
 import java.util.Date;
+import bnb.model.Neighborhood;
+
 import java.util.List;
 
 
@@ -32,8 +36,13 @@ public class Inserter {
 	public static void main(String[] args) throws SQLException {
 		// DAO instances.
 
+
 		UserDao userDao = UserDao.getInstance();
 		HostDao hostDao = HostDao.getInstance();
+		CalendarDao calendarDao = CalendarDao.getInstance();
+    	ListingRatingDao listingRatingDao = ListingRatingDao.getInstance();
+		NeighborhoodDao neighborhoodDao = NeighborhoodDao.getInstance();
+
 		
 		
 		User u1 = userDao.getUserByUserName("Kat15");
@@ -104,5 +113,33 @@ public class Inserter {
 //    System.out.println("After Update: " + listingRating);  // 5.1 rating for differentiation
     // Delete
 //    listingRatingDao.delete(listingRating);
+
+
+		// Create a neighborhood
+		Neighborhood neighborhood = new Neighborhood("testNeighborhood", "testNeighborhoodGroup");
+		neighborhood = neighborhoodDao.create(neighborhood);
+		System.out.println("********** create neighborhood ************");
+		System.out.println(neighborhood.getNeighborhood());
+		System.out.println(neighborhood.getNeighborhoodGroup());
+		System.out.println("");
+
+		// Get a neighborhood by neighborhood name
+		neighborhood = neighborhoodDao.getNeighborhoodFromNeighborhood("testNeighborhood");
+		System.out.println("********** get a neighborhood by neighborhood name ************");
+		System.out.println(neighborhood.getNeighborhood());
+		System.out.println(neighborhood.getNeighborhoodGroup());
+		System.out.println("");
+
+		// Update a neighborhood group
+		neighborhood = neighborhoodDao.updateNeighborhoodGroup(neighborhood, "updated testNeighborhoodGroup");
+		System.out.println("********** update neighborhood group ************");
+		System.out.println(neighborhood.getNeighborhood());
+		System.out.println(neighborhood.getNeighborhoodGroup());
+		System.out.println("");
+
+		// Delete a neighborhood
+		neighborhood = neighborhoodDao.deleteNeighborhood(neighborhood);
+		System.out.println("********** delete neighborhood ************");
+		System.out.println(neighborhood);
   }
 }
