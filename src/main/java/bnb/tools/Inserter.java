@@ -1,6 +1,8 @@
 package bnb.tools;
 
 
+import bnb.dal.HostRatingDao;
+import bnb.model.HostRating;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 
@@ -43,7 +45,8 @@ public class Inserter {
 		HostDao hostDao = HostDao.getInstance();
 		GuestDao guestDao = GuestDao.getInstance();
 		CalendarDao calendarDao = CalendarDao.getInstance();
-    	ListingRatingDao listingRatingDao = ListingRatingDao.getInstance();
+		HostRatingDao hostRatingDao = HostRatingDao.getInstance();
+		ListingRatingDao listingRatingDao = ListingRatingDao.getInstance();
 		NeighborhoodDao neighborhoodDao = NeighborhoodDao.getInstance();
 
 		
@@ -110,8 +113,51 @@ public class Inserter {
 //		
 //		calendar = calendarDao.delete(calendar);
 
+		// Host Rating
+		// Create
+		Host host = new Host(1, "hostName", "hostUserName", "password", "hostUrl", new Date(), "hostLocation",
+				"hostAbout", 100, 100);
+		HostRating hostRating1 = new HostRating(1, host, 5.0);
+		HostRating hostRating2 = new HostRating(2, host, 5.0);
+		hostRatingDao.create(hostRating1);
+		System.out.println("********** Create Host Rating ************");
+		System.out.println("ID: " + hostRating1.getId());
+		System.out.println("HostId: " + hostRating1.getHost().getId());
+		System.out.println("Rating: " + hostRating1.getRating());
+		System.out.println("");
 
-    // TODO: doesn't work yet, depends on Listing and Host tables, and replace below accordingly
+		// Read
+		hostRating1 = hostRatingDao.getHostRatingById(1);
+		System.out.println("********** Get a Host Rating by Host Rating ID ************");
+		System.out.println("ID: " + hostRating1.getId());
+		System.out.println("HostId: " + hostRating1.getHost().getId());
+		System.out.println("Rating: " + hostRating1.getRating());
+		System.out.println("");
+
+		List<HostRating> hostRatings = hostRatingDao.getHostRatingByHostId(1);
+		System.out.println("********** Get a Host Rating by Host ID ************");
+		for (HostRating hostRating : hostRatings) {
+			System.out.println("ID: " + hostRating.getId());
+			System.out.println("HostId: " + hostRating.getHost().getId());
+			System.out.println("Rating: " + hostRating.getRating());
+			System.out.println("");
+		}
+
+		// Update
+		hostRating1 = hostRatingDao.updateHostRatingRating(hostRating1, 2.5);
+		System.out.println("********** Update Host Rating Rating ************");
+		System.out.println("ID: " + hostRating1.getId());
+		System.out.println("HostId: " + hostRating1.getHost().getId());
+		System.out.println("Rating: " + hostRating1.getRating());
+		System.out.println("");
+
+		// Delete
+		hostRating1 = hostRatingDao.delete(hostRating1);
+		System.out.println("********** Delete a Host Rating ************");
+		System.out.println(hostRating1);
+		System.out.println("");
+
+		// TODO: doesn't work yet, depends on Listing and Host tables, and replace below accordingly
     // Create
     ListingRating listingRating; int listingId, hostId;
 //    listingRating = new ListingRating(2318, 2536, ListingRating.ScoreType.Rating, 0.1);
