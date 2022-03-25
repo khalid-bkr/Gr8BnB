@@ -15,7 +15,7 @@ import bnb.model.User;
 
 
 public class HostDao extends UserDao {
-	// Single pattern: instantiation is limited to one object.
+
 	private static HostDao instance = null;
 	protected HostDao() {
 		connectionManager = new ConnectionManager();
@@ -73,14 +73,57 @@ public class HostDao extends UserDao {
 			connection = connectionManager.getConnection();
 			selectStmt = connection.prepareStatement(selectHost);
 			selectStmt.setInt(1, id);
-			// Note that we call executeQuery(). This is used for a SELECT statement
-			// because it returns a result set. For more information, see:
-			// http://docs.oracle.com/javase/7/docs/api/java/sql/PreparedStatement.html
-			// http://docs.oracle.com/javase/7/docs/api/java/sql/ResultSet.html
+
 			results = selectStmt.executeQuery();
-			// You can iterate the result set (although the example below only retrieves 
-			// the first record). The cursor is initially positioned before the row.
-			// Furthermore, you can retrieve fields by name and by type.
+
+			if(results.next()) {
+				String resultUserName = results.getString("UserName");
+				String password = results.getString("Password");
+				String name = results.getString("Name");
+				int hostId = results.getInt("Host.ID");
+				Date hostSince = new Date(results.getTimestamp("HostSince").getTime());
+				String hostLocation = results.getString("HostLocation");
+				String hostAbout = results.getString("HostAbout");
+				String hostUrl = results.getString("HostUrl");
+				int hostListingsCount = results.getInt("HostListingsCount");
+				int hostTotalListingsCount = results.getInt("HostTotalListingsCount");
+				
+			
+				Host host = new Host(hostId,name,resultUserName,password,hostUrl,hostSince,hostLocation,hostAbout,hostListingsCount,hostTotalListingsCount);
+				return host;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if(connection != null) {
+				connection.close();
+			}
+			if(selectStmt != null) {
+				selectStmt.close();
+			}
+			if(results != null) {
+				results.close();
+			}
+		}
+		return null;
+	}
+	
+	public Host getHostByUserName(String userName) throws SQLException {
+		String selectHost = "SELECT Host.ID, Name, UserName, Password, HostUrl, HostSince, HostLocation, HostAbout, HostListingsCount, HostTotalListingsCount " +
+							"FROM User INNER JOIN Host" +
+							"	ON Host.ID = User.ID " +
+							"WHERE UserName=?;";
+		Connection connection = null;
+		PreparedStatement selectStmt = null;
+		ResultSet results = null;
+		try {
+			connection = connectionManager.getConnection();
+			selectStmt = connection.prepareStatement(selectHost);
+			selectStmt.setString(1, userName);
+
+			results = selectStmt.executeQuery();
+
 			if(results.next()) {
 				String resultUserName = results.getString("UserName");
 				String password = results.getString("Password");
@@ -129,7 +172,6 @@ public class HostDao extends UserDao {
 			
 			super.delete(host);
 
-			// Return null so the caller can no longer operate on the Persons instance.
 			return null;
 		} catch (SQLException e) {
 			e.printStackTrace();

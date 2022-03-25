@@ -9,10 +9,12 @@ import bnb.dal.UserDao;
 import bnb.model.User;
 
 import bnb.dal.CalendarDao;
+import bnb.dal.GuestDao;
 import bnb.dal.HostDao;
 import bnb.dal.ListingRatingDao;
 import bnb.dal.NeighborhoodDao;
 import bnb.model.Calendar;
+import bnb.model.Guest;
 import bnb.model.Host;
 import bnb.model.ListingRating;
 
@@ -39,15 +41,16 @@ public class Inserter {
 
 		UserDao userDao = UserDao.getInstance();
 		HostDao hostDao = HostDao.getInstance();
+		GuestDao guestDao = GuestDao.getInstance();
 		CalendarDao calendarDao = CalendarDao.getInstance();
     	ListingRatingDao listingRatingDao = ListingRatingDao.getInstance();
 		NeighborhoodDao neighborhoodDao = NeighborhoodDao.getInstance();
 
 		
 		
-		User u1 = userDao.getUserByUserName("Kat15");
-		System.out.format("Reading USER: id:%s n:%s un:%s \n",
-		u1.getId(), u1.getName(), u1.getUserName());
+//		User u1 = userDao.getUserByUserName("Kat15");
+//		System.out.format("Reading USER: id:%s n:%s un:%s \n",
+//		u1.getId(), u1.getName(), u1.getUserName());
 		
 //		User user = new User(436188584,"Bruce","Bruce127","password");
 //		user = userDao.create(user);
@@ -60,18 +63,32 @@ public class Inserter {
 //		System.out.format("Reading USER: id:%s n:%s un:%s \n",
 //		u3.getId(), u3.getName(), u3.getUserName());
 		
-		Date date = new Date();
+//		host test
+//		Date date = new Date();
 //		Host host = new Host(436188584,"Bruce","Bruce127","password","https://www.airbnb.com/users/show/2536",date, "Seattle, Washington, United States", "im new here", 0, 0);
 //		host = hostDao.create(host);
 //		System.out.format("Reading USER: id:%s n:%s un:%s hs:%s, ha:%s \n",
 //				host.getId(), host.getName(), host.getUserName(), host.getHostSince(), host.getHostAbout());
+//		
+//		
+//		Host h1 = hostDao.getHostByUserName("Bruce127");
+//		System.out.format("Reading USER: id:%s n:%s un:%s hs:%s, ha:%s \n",
+//		h1.getId(), h1.getName(), h1.getUserName(), h1.getHostSince(), h1.getHostAbout());
+//		
+//		hostDao.delete(h1);
 		
+//		guest test
 		
-		Host h1 = hostDao.getHostById(436188584);
-		System.out.format("Reading USER: id:%s n:%s un:%s hs:%s, ha:%s \n",
-		h1.getId(), h1.getName(), h1.getUserName(), h1.getHostSince(), h1.getHostAbout());
-		
-		hostDao.delete(h1);
+//		Guest guest = new Guest(436188585,"Bruce","Bruce128","password");
+//		guest = guestDao.create(guest);
+//		System.out.format("Reading USER: id:%s n:%s un:%s \n",
+//		guest.getId(), guest.getName(), guest.getUserName());
+//		
+//		Guest g1 = guestDao.getGuestById(436188585);
+//		System.out.format("Reading USER: id:%s n:%s un:%s \n",
+//				g1.getId(), g1.getName(), g1.getUserName());
+//		
+//		System.out.print(guestDao.delete(guest));
 		
 		
 		
