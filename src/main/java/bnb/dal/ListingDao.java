@@ -29,6 +29,7 @@ public class ListingDao {
     return instance;
   }
 
+
   public Listing create(Listing listing) throws SQLException {
     String insertListing= "INSERT INTO Listing(ID, ListingUrl, Name, Description,"
         + " NeighborhoodOverview, PictureUrl, HostID, Neighborhood, Accommodates,"
@@ -83,9 +84,8 @@ public class ListingDao {
   }
 
 
-
   public Listing getListingById (int id) throws SQLException {
-    String selectListing = "SELECT * FROM HostRating WHERE ID=?;";
+    String selectListing = "SELECT * FROM Listing WHERE ID=?;";
 
     Connection connection = null;
     PreparedStatement selectStmt = null;
@@ -152,7 +152,7 @@ public class ListingDao {
 
 
 
-  public List<Listing> getListingByHostId(int hostId) throws SQLException {
+  public List<Listing> getListingsByHostId(int hostId) throws SQLException {
     List<Listing> listings = new ArrayList<>();
     String selectListings = "SELECT * FROM Listing WHERE HostId=?;";
 
@@ -219,6 +219,72 @@ public class ListingDao {
   }
 
 
+  public List<Listing> getListingsByPriceLimit(double maxPrice) throws SQLException {
+    List<Listing> listings = new ArrayList<>();
+    String selectListings = "SELECT * FROM Listing WHERE Price <=?;";
+
+    Connection connection = null;
+    PreparedStatement selectStmt = null;
+    ResultSet results = null;
+
+    try {
+      connection = connectionManager.getConnection();
+      selectStmt = connection.prepareStatement(selectListings);
+      selectStmt.setDouble(1, maxPrice);
+      HostDao hostDao = HostDao.getInstance();
+      NeighborhoodDao neighborhoodDao = NeighborhoodDao.getInstance();
+
+      results = selectStmt.executeQuery();
+      while (results.next()) {
+
+        int resultId = results.getInt("ID");
+        String listingURL = results.getString("ListingUrl");
+        String name = results.getString("Name");
+        String description = results.getString("Description");
+        String neighborhoodOverview = results.getString("NeighborhoodOverview");
+        String  pictureUrl = results.getString("pictureUrl");
+        Host host = hostDao.getHostById(results.getInt("HostID"));
+        Neighborhood neighborhood =
+            neighborhoodDao.getNeighborhoodFromNeighborhood(results.getString("Neighborhood"));
+        int accommodates = results.getInt("Accommodates");
+        String  bathroomsText = results.getString("BathroomsText");
+        int bedrooms = results.getInt("Bedrooms");
+        double price = results.getDouble("Price");
+        boolean hasAvailability = results.getBoolean("hasAvailability");;
+        int numberOfReviews = results.getInt("NumberOfReviews");
+        Date firstReview = results.getDate("FirstReview");
+        Date lastReview = results.getDate("LastReview");
+        String  license = results.getString("License");
+        boolean instantBookable = results.getBoolean("InstantBookable");;
+        double latitude = results.getDouble("Latitude");
+        double longitude = results.getDouble("Longitude");
+        RoomType roomType = RoomType.fromString(results.getString("RoomType"));
+        String  propertyType = results.getString("PropertyType");
+
+        Listing listing = new Listing(resultId, listingURL, name, description, neighborhoodOverview,
+            pictureUrl, host, neighborhood, accommodates,  bathroomsText, bedrooms, price, hasAvailability,
+            numberOfReviews,  firstReview,  lastReview, license, instantBookable, latitude, longitude,
+            roomType, propertyType);
+
+        listings.add(listing);
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+      throw e;
+    } finally {
+      if (connection != null) {
+        connection.close();
+      }
+      if (selectStmt != null) {
+        selectStmt.close();
+      }
+      if (results != null) {
+        results.close();
+      }
+    }
+    return listings;
+  }
+
 
   public Listing updateListingPrice(Listing listing, double newPrice) throws SQLException {
     String updateListingPrice = "UPDATE Listing SET Price=? WHERE ID=?;";
@@ -246,7 +312,6 @@ public class ListingDao {
       }
     }
   }
-
 
 
   public Listing updateListingAvailability(Listing listing, boolean newAvailability) throws SQLException {
