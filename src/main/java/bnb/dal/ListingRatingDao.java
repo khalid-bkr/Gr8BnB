@@ -1,5 +1,7 @@
 package bnb.dal;
 
+import bnb.model.Host;
+import bnb.model.Listing;
 import bnb.model.ListingRating;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,13 +25,13 @@ public class ListingRatingDao {
 
   public ListingRating create(ListingRating listingRating) throws SQLException {
     String insertOne =
-      "INSERT INTO Gr8BnBApplication.ListingRating(ListingID, HostID, ScoreType, Score)"
+      "INSERT INTO Gr8BnBApplication.ListingRating(ID, ListingID, HostID, ScoreType, Score)"
         + "VALUES(?,?,?,?);";
 
     try (Connection connection = connectionManager.getConnection();
       PreparedStatement statement = connection.prepareStatement(insertOne)) {
-      statement.setInt(1, listingRating.getListingId());
-      statement.setInt(2, listingRating.getHostId());
+      statement.setInt(1, listingRating.getListing().getID());
+      statement.setInt(2, listingRating.getHost().getId());
       statement.setString(3, listingRating.getScoreType().name());
       statement.setDouble(4, listingRating.getScore());
 
@@ -39,10 +41,9 @@ public class ListingRatingDao {
       if (key.next()) {
         listRatingId = key.getInt(1);
       } else {
-        throw new SQLException("Unable to get auto-generated key: restaurantId");
+        throw new SQLException("Unable to get auto-generated key: ListingId");
       }
 
-      listingRating.setListingId(listRatingId);
       return listingRating;
     } catch (SQLException e) {
       e.printStackTrace();
@@ -71,6 +72,8 @@ public class ListingRatingDao {
       statement.setInt(1, listingRatingId);
 
       res = statement.executeQuery();
+      HostDao hostDao = HostDao.getInstance();
+      ListingDao listingDao = ListingDao.getInstance();
       if (res.next()) {
         int id = res.getInt("ID");
         int listingId = res.getInt("ListingID");
@@ -78,8 +81,12 @@ public class ListingRatingDao {
         ListingRating.ScoreType scoreType =
           ListingRating.ScoreType.valueOf(res.getString("ScoreType"));
         double score = res.getDouble("Score");
+        
+        Listing listing = listingDao.getListingById(listingId);
+        Host host = hostDao.getHostById(hostId);
+        
 
-        return new ListingRating(id, listingId, hostId, scoreType, score);
+        return new ListingRating(id, listing, host, scoreType, score);
       }
     } catch (SQLException e) {
       e.printStackTrace();
@@ -114,14 +121,19 @@ public class ListingRatingDao {
       statement.setInt(1, listingId);
 
       res = statement.executeQuery();
+      HostDao hostDao = HostDao.getInstance();
+      ListingDao listingDao = ListingDao.getInstance();
       while (res.next()) {
         int id = res.getInt("ID");
         int hostId = res.getInt("HostID");
         ListingRating.ScoreType scoreType =
           ListingRating.ScoreType.valueOf(res.getString("ScoreType"));
         double score = res.getDouble("Score");
+        
+        Listing listing = listingDao.getListingById(listingId);
+        Host host = hostDao.getHostById(hostId);
 
-        ListingRating listingRating = new ListingRating(id, hostId, listingId, scoreType, score);
+        ListingRating listingRating = new ListingRating(id, listing, host, scoreType, score);
         listingRatings.add(listingRating);
       }
     } catch (SQLException e) {
