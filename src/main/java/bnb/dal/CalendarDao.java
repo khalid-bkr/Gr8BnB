@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bnb.model.Calendar;
+import bnb.model.Listing;
 import bnb.tools.Util;
 
 /**
@@ -42,9 +43,8 @@ public class CalendarDao {
 	public Calendar create(Calendar calendar) throws SQLException {
 		try (Connection connection = connectionManager.getConnection();
 				PreparedStatement statement = connection.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)) {
-			// Replace once ListingID is defined
-			// statement.setLong(1, calendar.getListing.getID());
-			statement.setLong(1, 2318); // dummy listingID
+
+			 statement.setLong(1, calendar.getListing().getID());
 			statement.setDate(2, calendar.getDate());
 			statement.setBoolean(3, calendar.isAvailable());
 			statement.setBigDecimal(4, calendar.getPrice());
@@ -69,9 +69,8 @@ public class CalendarDao {
 			statement.setInt(1, ID);
 			ResultSet results = statement.executeQuery();
 			if (results.next()) {
-				// TODO: Change constructor once Listing is defined
 				return new Calendar(ID,
-						// ListingDao.getInstance().getListingByID(results.getLong("ListingID")),
+						 ListingDao.getInstance().getListingById(results.getInt("ListingID")),
 						results.getDate("Date"), results.getBoolean("Available"), results.getBigDecimal("Price"),
 						results.getBigDecimal("AdjustedPrice"), results.getInt("MinimumNights"),
 						results.getInt("MaximumNights"));
@@ -86,11 +85,10 @@ public class CalendarDao {
 			statement.setInt(1, listingID);
 			ResultSet results = statement.executeQuery();
 			List<Calendar> calendars = new ArrayList<>();
-			// Listing listing = ListingDao.getInstance().getListingByID(listingID);
+			 Listing listing = ListingDao.getInstance().getListingById(listingID);
 			while (results.next()) {
-				// TODO: Change constructor once Listing is defined
 				calendars.add(new Calendar(results.getInt("ID"),
-						// listing,
+						 listing,
 						results.getDate("Date"), results.getBoolean("Available"), results.getBigDecimal("Price"),
 						results.getBigDecimal("AdjustedPrice"), results.getInt("MinimumNights"),
 						results.getInt("MaximumNights")));
