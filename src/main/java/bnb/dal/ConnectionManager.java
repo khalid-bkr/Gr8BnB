@@ -38,7 +38,7 @@ public class ConnectionManager {
 	// Password for the user.
 	private final String password = "password-here";
 	// URI to your database server. If running on the same machine, then this is "localhost".
-	private final String hostName = "host-name-here";
+	private final String hostName = "hostname-here";
 	// Port to your database server. By default, this is 3307.
 	private final int port= 3306;
 	// Name of the MySQL schema that contains your tables.
