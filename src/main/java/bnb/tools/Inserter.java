@@ -2,7 +2,10 @@ package bnb.tools;
 
 
 import bnb.dal.HostRatingDao;
+import bnb.dal.ListingDao;
 import bnb.model.HostRating;
+import bnb.model.Listing;
+
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -213,6 +216,14 @@ public class Inserter {
 		
 		// REVIEWS - not yet tested as it relies on Listing
 		
+		GuestDao guestDaoForReview = GuestDao.getInstance();
+		ListingDao listingDaoForReview = ListingDao.getInstance();
+		// Note: these are real ids from actual Gr8Bnb data
+		Guest sampleGuest1 = guestDaoForReview.getGuestById(436188585);
+		Listing sampleListing1 = listingDaoForReview.getListingById(2318);
+		Guest sampleGuest2 = guestDaoForReview.getGuestById(436188585);
+		Listing sampleListing2 = listingDaoForReview.getListingById(2318);
+		
 		// Create Reviews
 		System.out.println("********** create review ************");
 		String sampleDateString = "2018-10-01";
@@ -225,16 +236,18 @@ public class Inserter {
 		}
 		
 		if (sampleDate != null) {
-			Review review1 = new Review(Long.valueOf(1), sampleDate, 1, "Lovely place to stay!", 1);
+			Review review1 = new Review(Long.valueOf(1), sampleDate, sampleGuest1, "Lovely place to stay!", sampleListing1);
 			review1 = reviewDao.create(review1);
-			System.out.format("\tCreating review: id: %d, date: %s, reviewerId: %d, comments: %s, listingId: %s\n", 
-					review1.getId(), review1.getDate().toString(), review1.getReviewerId(), review1.getComments(), review1.getListingId());
-			Review review2 = new Review(Long.valueOf(2), sampleDate, 46, "Excellent!", 30);
+			System.out.format("\tCreating review: id: %d, date: %s, reviewer id: %d, comments: %s, listing id: %s\n", 
+					review1.getId(), review1.getDate().toString(), review1.getGuest().getId(), review1.getComments(), review1.getListing().getID());
+			Review review2 = new Review(Long.valueOf(2), sampleDate, sampleGuest1, "Excellent!", sampleListing2);
 			review2 = reviewDao.create(review2);
-			System.out.format("\tCreating review: id: %d, date: %s, reviewerId: %d, comments: %s, listingId: %s\n", 
-					review2.getId(), review2.getDate().toString(), review2.getReviewerId(), review2.getComments(), review2.getListingId());
-			Review review3 = new Review(Long.valueOf("323532651363"), null, 1, "Nice and cozy", 30);
+			System.out.format("\tCreating review: id: %d, date: %s, reviewer id: %d, comments: %s, listing id: %s\n", 
+					review2.getId(), review2.getDate().toString(), review2.getGuest().getId(), review2.getComments(), review2.getListing().getID());
+			Review review3 = new Review(Long.valueOf("323532651363"), null, sampleGuest2, "Nice and cozy", sampleListing2);
 			review3 = reviewDao.create(review3);
+			System.out.format("\tCreating review: id: %d, date: %s, reviewer id: %d, comments: %s, listing id: %s\n", 
+					review2.getId(), review2.getDate().toString(), review2.getGuest().getId(), review2.getComments(), review2.getListing().getID());
 		}
 		
 		// Get Review by Id
@@ -243,8 +256,8 @@ public class Inserter {
 		
 		for (String idString : reviewIdStrings) {
 			Review review = reviewDao.getReviewById(Long.parseLong(idString));
-			System.out.format("\tReading review with id '%s': id: %d, date: %s, reviewerId: %d, comments: %s, listingId: %s\n",
-					idString, review.getId(), review.getDate().toString(), review.getReviewerId(), review.getComments(), review.getListingId());
+			System.out.format("\tReading review with id '%s': id: %d, date: %s, reviewer id: %d, comments: %s, listing id: %s\n",
+					idString, review.getId(), review.getDate().toString(), review.getGuest().getId(), review.getComments(), review.getListing().getID());
 		}
 		
 		// Get Reviews by ReviewerId
@@ -253,8 +266,8 @@ public class Inserter {
 		List<Review> reviewsWithReviewerId = reviewDao.getReviewsByReviewerId(chosenReviewerId);
 		
 		for (Review review : reviewsWithReviewerId) {
-			System.out.format("\tReading review with reviewerId '%d': id: %d, date: %s, reviewerId: %d, comments: %s, listingId: %s\n",
-					chosenReviewerId, review.getId(), review.getDate().toString(), review.getReviewerId(), review.getComments(), review.getListingId());
+			System.out.format("\tReading review with reviewerId '%d': id: %d, date: %s, reviewer id: %d, comments: %s, listing id: %s\n",
+					chosenReviewerId, review.getId(), review.getDate().toString(), review.getGuest().getId(), review.getComments(), review.getListing().getID());
 		}
 		
 		// Get Reviews by ListingId
@@ -263,8 +276,8 @@ public class Inserter {
 		List<Review> reviewsWithListingId = reviewDao.getReviewsByReviewerId(chosenListingId);
 		
 		for (Review review : reviewsWithListingId) {
-			System.out.format("\tReading review with listingId '%d': id: %d, date: %s, reviewerId: %d, comments: %s, listingId: %s\n",
-					chosenListingId, review.getId(), review.getDate().toString(), review.getReviewerId(), review.getComments(), review.getListingId());
+			System.out.format("\tReading review with listingId '%d': id: %d, date: %s, reviewer id: %d, comments: %s, listing id: %s\n",
+					chosenListingId, review.getId(), review.getDate().toString(), review.getGuest().getId(), review.getComments(), review.getListing().getID());
 		}
 		
 		// Delete Reviews

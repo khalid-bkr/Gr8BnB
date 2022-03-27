@@ -38,9 +38,9 @@ public class ReviewDao {
 			
 			insertStmt.setLong(1, review.getId());
 			insertStmt.setDate(2, new Date (review.getDate().getTime()));
-			insertStmt.setInt(3, review.getReviewerId());
+			insertStmt.setInt(3, review.getGuest().getId());
 			insertStmt.setString(4, review.getComments());
-			insertStmt.setInt(5, review.getListingId());
+			insertStmt.setInt(5, review.getListing().getID());
 			
 			insertStmt.executeUpdate();
 			
@@ -95,7 +95,10 @@ public class ReviewDao {
 	 * This runs a SELECT statement and returns a single Review instance.
 	 */
 	public Review getReviewById(Long id) throws SQLException {
-		String selectReview = "SELECT * FROM Review WHERE ID=?;";
+		String selectReview =
+				"SELECT (ID, Date, ReviewerID, Comments, ListingID) " +
+				"FROM Review " +
+				"WHERE ID=?;";
 		Connection connection = null;
 		PreparedStatement selectStmt = null;
 		ResultSet results = null;
@@ -105,6 +108,9 @@ public class ReviewDao {
 			
 			selectStmt.setLong(1, id);
 			results = selectStmt.executeQuery();
+			GuestDao guestDao = GuestDao.getInstance();
+			ListingDao listingDao = ListingDao.getInstance();
+			
 			if(results.next()) {
 				Long resultId = results.getLong("ID");
 				java.util.Date date = new java.util.Date(results.getDate("Date").getTime());
@@ -112,7 +118,10 @@ public class ReviewDao {
 				String comments = results.getString("Comments");
 				Integer listingId = results.getInt("ListingID");
 				
-				Review review = new Review(resultId, date, reviewerId, comments, listingId);
+				Guest guest = guestDao.getGuestById(reviewerId);
+				Listing listing = listingDao.getListingById(listingId);
+				
+				Review review = new Review(resultId, date, guest, comments, listing);
 				return review;
 			}
 		} catch (SQLException e) {
@@ -138,7 +147,10 @@ public class ReviewDao {
 	 */
 	public List<Review> getReviewsByReviewerId(Integer reviewerId) throws SQLException {
 		List<Review> reviews = new ArrayList<Review>();
-		String selectReview = "SELECT * FROM Review WHERE ReviewerID=?;";
+		String selectReview =
+				"SELECT ID, Date, ReviewerID, Comments, ListingID " +
+				"FROM Review " +
+				"WHERE ID=?;";
 		Connection connection = null;
 		PreparedStatement selectStmt = null;
 		ResultSet results = null;
@@ -147,6 +159,9 @@ public class ReviewDao {
 			selectStmt = connection.prepareStatement(selectReview);
 			selectStmt.setInt(1, reviewerId);
 			results = selectStmt.executeQuery();
+			GuestDao guestDao = GuestDao.getInstance();
+			ListingDao listingDao = ListingDao.getInstance();
+			
 			while(results.next()) {
 				Long id = results.getLong("ID");
 				java.util.Date date = new java.util.Date(results.getDate("Date").getTime());
@@ -154,7 +169,10 @@ public class ReviewDao {
 				String comments = results.getString("Comments");
 				Integer listingId = results.getInt("ListingID");
 				
-				Review review = new Review(id, date, resultReviewerId, comments, listingId);
+				Guest guest = guestDao.getGuestById(resultReviewerId);
+				Listing listing = listingDao.getListingById(listingId);
+				
+				Review review = new Review(id, date, guest, comments, listing);
 				reviews.add(review);
 			}
 		} catch (SQLException e) {
@@ -180,7 +198,10 @@ public class ReviewDao {
 	 */
 	public List<Review> getReviewsByListingId(Integer listingId) throws SQLException {
 		List<Review> reviews = new ArrayList<Review>();
-		String selectReview = "SELECT * FROM Review WHERE ListingID=?;";
+		String selectReview = 
+				"SELECT ID, Date, ReviewerID, Comments, ListingID) " +
+				"FROM Review " +
+				"WHERE ListingID=?;";
 		Connection connection = null;
 		PreparedStatement selectStmt = null;
 		ResultSet results = null;
@@ -189,6 +210,9 @@ public class ReviewDao {
 			selectStmt = connection.prepareStatement(selectReview);
 			selectStmt.setInt(1, listingId);
 			results = selectStmt.executeQuery();
+			GuestDao guestDao = GuestDao.getInstance();
+			ListingDao listingDao = ListingDao.getInstance();
+			
 			while(results.next()) {
 				Long id = results.getLong("ID");
 				java.util.Date date = new java.util.Date(results.getDate("Date").getTime());
@@ -196,7 +220,10 @@ public class ReviewDao {
 				String comments = results.getString("Comments");
 				Integer resultListingId = results.getInt("ListingID");
 				
-				Review review = new Review(id, date, reviewerId, comments, resultListingId);
+				Guest guest = guestDao.getGuestById(reviewerId);
+				Listing listing = listingDao.getListingById(resultListingId);
+				
+				Review review = new Review(id, date, guest, comments, listing);
 				reviews.add(review);
 			}
 		} catch (SQLException e) {
