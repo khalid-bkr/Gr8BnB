@@ -5,16 +5,16 @@ import java.util.Date;
 public class Review {
 	protected Long id;
 	protected Date date;
-	protected Integer reviewerId;
+	protected Guest guest;
 	protected String comments;
-	protected Integer listingId;
+	protected Listing listing;
 	
-	public Review(Long id, Date date, Integer reviewerId, String comments, Integer listingId) {
+	public Review(Long id, Date date, Guest guest, String comments, Listing listing) {
 		this.id = id;
 		this.date = date;
-		this.reviewerId = reviewerId;
+		this.guest = guest;
 		this.comments = comments;
-		this.listingId = listingId;
+		this.listing = listing;
 	}
 
 	public Long getId() {
@@ -33,12 +33,12 @@ public class Review {
 		this.date = date;
 	}
 	
-	public Integer getReviewerId() {
-		return reviewerId;
+	public Guest getGuest() {
+		return guest;
 	}
 
-	public void setReviewerId(Integer reviewerId) {
-		this.reviewerId = reviewerId;
+	public void setGuest(Guest guest) {
+		this.guest = guest;
 	}
 	
 	public String getComments() {
@@ -49,11 +49,11 @@ public class Review {
 		this.comments = comments;
 	}
 	
-	public Integer getListingId() {
-		return listingId;
+	public Listing getListing() {
+		return listing;
 	}
 
-	public void setListingId(Integer listingId) {
-		this.listingId = listingId;
+	public void setListing(Listing listing) {
+		this.listing = listing;
 	}
 }
