@@ -8,6 +8,7 @@ import java.sql.Statement;
 
 import bnb.model.Amenity;
 import bnb.model.ListingAmenity;
+import bnb.model.Listing;
 
 public class ListingAmenityDao {
 	protected ConnectionManager connectionManager;
@@ -31,7 +32,7 @@ public class ListingAmenityDao {
 			connection = connectionManager.getConnection();
 			insertStmt = connection.prepareStatement(insertListingAmenity,Statement.RETURN_GENERATED_KEYS);
 			
-			insertStmt.setInt(1, listingAmenity.getListing().getId());
+			insertStmt.setInt(1, listingAmenity.getListing().getID());
 			insertStmt.setInt(2, listingAmenity.getAmenity().getId());
 			insertStmt.executeUpdate();
 			

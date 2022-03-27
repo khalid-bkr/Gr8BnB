@@ -158,7 +158,7 @@ public class HostRatingDao {
 
     Connection connection = null;
     PreparedStatement selectStmt = null;
-    ResultSet resultSet = null;
+//    ResultSet resultSet = null;
     try {
       connection = connectionManager.getConnection();
       selectStmt = connection.prepareStatement(updateHostRating);

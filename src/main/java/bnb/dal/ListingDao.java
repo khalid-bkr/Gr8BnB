@@ -39,7 +39,7 @@ public class ListingDao {
 
     Connection connection = null;
     PreparedStatement insertStmt = null;
-    ResultSet resultKey = null;
+//    ResultSet resultKey = null;
 
     try {
           connection = connectionManager.getConnection();
@@ -291,7 +291,7 @@ public class ListingDao {
 
     Connection connection = null;
     PreparedStatement selectStmt = null;
-    ResultSet resultSet = null;
+//    ResultSet resultSet = null;
     try {
       connection = connectionManager.getConnection();
       selectStmt = connection.prepareStatement(updateListingPrice);
@@ -319,7 +319,7 @@ public class ListingDao {
 
     Connection connection = null;
     PreparedStatement selectStmt = null;
-    ResultSet resultSet = null;
+//    ResultSet resultSet = null;
 
     try {
       connection = connectionManager.getConnection();
