@@ -25,6 +25,10 @@ public class ReviewDao {
 		return instance;
 	}
 
+	/**
+	 * Create a Review instance.
+	 * This runs a CREATE statement and returns the resulting Review.
+	 */
 	public Review create(Review review) throws SQLException {
 		String insertReview =
 			"INSERT INTO Review(ID,Date,ReviewerID,Comments,ListingID) " +
@@ -44,6 +48,22 @@ public class ReviewDao {
 			
 			insertStmt.executeUpdate();
 			
+			ListingDao listingDao = ListingDao.getInstance();
+			Listing associatedListing = listingDao.getListingById(review.getListing().getID());
+			
+			// Increment NumberOfReviews for the associated listing
+			listingDao.incrementNumberOfReviews(associatedListing);
+			
+			// Update FirstReview of the associated listing
+			if (associatedListing.getFirstReview() == null || (associatedListing.getFirstReview() != null && associatedListing.getFirstReview().after(review.getDate()))) {
+				listingDao.updateFirstReview(associatedListing, review.getDate());
+			}
+			
+			// Update LastReview of the associated listing
+			if (associatedListing.getLastReview() == null || (associatedListing.getLastReview() != null && associatedListing.getLastReview().before(review.getDate()))) {
+				listingDao.updateLastReview(associatedListing, review.getDate());
+			}
+					
 			return review;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -73,9 +93,32 @@ public class ReviewDao {
 			connection = connectionManager.getConnection();
 			deleteStmt = connection.prepareStatement(deleteReview);
 			deleteStmt.setLong(1, review.getId());
+			
 			deleteStmt.executeUpdate();
+			
+			ListingDao listingDao = ListingDao.getInstance();
+			Listing associatedListing = listingDao.getListingById(review.getListing().getID());
+			
+			// Decrement NumberOfReviews for the associated listing
+			listingDao.decrementNumberOfReviews(associatedListing);
+			
+			// Update FirstReview of the associated listing
+			if (associatedListing.getFirstReview() != null && associatedListing.getFirstReview() == review.getDate()) {
+				listingDao.updateFirstReview(associatedListing, null);
+			}
+			
+			// Update LastReview of the associated listing
+			if (associatedListing.getLastReview() != null && associatedListing.getLastReview() == review.getDate()) {
+				
+				// Get the replacement last date
+				java.util.Date replacementLastReviewDate = listingDao.getLastReviewDateOfListing(associatedListing);
+				if (replacementLastReviewDate == null) {
+					listingDao.updateLastReview(associatedListing, null);
+				} else {
+					listingDao.updateLastReview(associatedListing, replacementLastReviewDate);
+				}
+			}
 
-			// Return null so the caller can no longer operate on the Persons instance.
 			return null;
 		} catch (SQLException e) {
 			e.printStackTrace();
