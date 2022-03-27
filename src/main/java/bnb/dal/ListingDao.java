@@ -374,5 +374,177 @@ public class ListingDao {
       }
     }
   }
+  
+  /**
+	* Increment the NumberOfReviews for a given listing by 1.
+	* This runs an UPDATE statement.
+	*/
+  public Listing incrementNumberOfReviews(Listing listing) throws SQLException {
+      Connection connection = null;
+      String updateListingNumReviews = "UPDATE Listing SET NumberOfReviews=NumberOfReviews + 1 WHERE ID=?;";
+      PreparedStatement updateStmt = null;
 
+      try {
+          connection = connectionManager.getConnection();
+          updateStmt = connection.prepareStatement(updateListingNumReviews);
+          updateStmt.setInt(1, listing.getID());
+          updateStmt.executeUpdate();
+
+          listing.setNumberOfReviews(listing.getNumberOfReviews() + 1);
+          return listing;
+      } catch (SQLException e) {
+          e.printStackTrace();
+          throw e;
+      } finally {
+          if (connection != null) {
+              connection.close();
+          }
+          if (updateStmt != null) {
+              updateStmt.close();
+          }
+      }
+  }
+  
+  /**
+	* Decrement the NumberOfReviews for a given listing by 1.
+	* This runs an UPDATE statement.
+	*/
+  public Listing decrementNumberOfReviews(Listing listing) throws SQLException {
+      Connection connection = null;
+      String updateListingNumReviews = "UPDATE Listing SET NumberOfReviews=NumberOfReviews - 1 WHERE ID=?;";
+      PreparedStatement updateStmt = null;
+
+      try {
+          connection = connectionManager.getConnection();
+          updateStmt = connection.prepareStatement(updateListingNumReviews);
+          updateStmt.setInt(1, listing.getID());
+          updateStmt.executeUpdate();
+
+          listing.setNumberOfReviews(listing.getNumberOfReviews() - 1);
+          return listing;
+      } catch (SQLException e) {
+          e.printStackTrace();
+          throw e;
+      } finally {
+          if (connection != null) {
+              connection.close();
+          }
+          if (updateStmt != null) {
+              updateStmt.close();
+          }
+      }
+  }
+  
+  /**
+	* Update the FirstReview date of a given listing.
+	* This runs an UPDATE statement.
+	*/
+  public Listing updateFirstReview(Listing listing, Date reviewDate) throws SQLException {
+	    String updateListingFirstReview = "UPDATE Listing SET FirstReview=? WHERE ID=?;";
+
+	    Connection connection = null;
+	    PreparedStatement updateStmt = null;
+
+	    try {
+	      connection = connectionManager.getConnection();
+	      updateStmt = connection.prepareStatement(updateListingFirstReview);
+	      updateStmt.setDate(1, new java.sql.Date (reviewDate.getTime()));
+	      updateStmt.setInt(1, listing.getID());
+
+	      updateStmt.executeUpdate();
+	      
+	      listing.setFirstReview(reviewDate);
+	      
+	      return listing;
+	    } catch (SQLException e) {
+	      e.printStackTrace();
+	      throw e;
+	    } finally {
+	      if (connection != null) {
+	        connection.close();
+	      }
+	      if (updateStmt != null) {
+	    	  updateStmt.close();
+	      }
+	    }
+	  }
+  
+  /**
+	* Update the LastReview date of a given listing.
+	* This runs an UPDATE statement.
+	*/
+  public Listing updateLastReview(Listing listing, Date reviewDate) throws SQLException {
+	    String updateListingFirstReview = "UPDATE Listing SET LastReview=? WHERE ID=?;";
+
+	    Connection connection = null;
+	    PreparedStatement updateStmt = null;
+
+	    try {
+	      connection = connectionManager.getConnection();
+	      updateStmt = connection.prepareStatement(updateListingFirstReview);
+	      updateStmt.setDate(1, new java.sql.Date (reviewDate.getTime()));
+	      updateStmt.setInt(1, listing.getID());
+
+	      updateStmt.executeUpdate();
+	      
+	      listing.setLastReview(reviewDate);
+	      
+	      return listing;
+	    } catch (SQLException e) {
+	      e.printStackTrace();
+	      throw e;
+	    } finally {
+	      if (connection != null) {
+	        connection.close();
+	      }
+	      if (updateStmt != null) {
+	    	  updateStmt.close();
+	      }
+	    }
+	  }
+  
+  /**
+	* Gets the last review date of a given listing.
+	* This runs an SELECT statement and returns the date as a java.util.Date)
+	*/
+  public Date getLastReviewDateOfListing (Listing listing) throws SQLException {
+	    String selectLastReviewDateOfListing = 
+	    		"SELECT Review.Date " +
+	    		"FROM Listing INNER JOIN Review " +
+	    		"WHERE Listing.ID=? " + 
+	    	    "ORDER BY Review.Date DESC " +
+	    	    "LIMIT 1;";
+
+	    Connection connection = null;
+	    PreparedStatement selectStmt = null;
+	    ResultSet results = null;
+
+	    try {
+	      connection = connectionManager.getConnection();
+	      selectStmt = connection.prepareStatement(selectLastReviewDateOfListing);
+	      selectStmt.setInt(1, listing.getID());
+
+	      results = selectStmt.executeQuery();
+
+	      if (results.next()) {
+	        Date resultLastReviewDate = new java.util.Date(results.getDate("Date").getTime());
+
+	        return resultLastReviewDate;
+	      }
+	    } catch (SQLException e) {
+	      e.printStackTrace();
+	      throw e;
+	    } finally {
+	      if(connection != null) {
+	        connection.close();
+	      }
+	      if(selectStmt != null) {
+	        selectStmt.close();
+	      }
+	      if(results != null) {
+	        results.close();
+	      }
+	    }
+	    return null;
+	  }
 }
