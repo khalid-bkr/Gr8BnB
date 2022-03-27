@@ -2,7 +2,10 @@ package bnb.tools;
 
 
 import bnb.dal.HostRatingDao;
+import bnb.dal.ListingDao;
 import bnb.model.HostRating;
+import bnb.model.Listing;
+
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -54,6 +57,7 @@ public class Inserter {
 		ListingRatingDao listingRatingDao = ListingRatingDao.getInstance();
 		NeighborhoodDao neighborhoodDao = NeighborhoodDao.getInstance();
 		ReviewDao reviewDao = ReviewDao.getInstance();
+		ListingDao listingDao = ListingDao.getInstance();
 		
 		
 //		User u1 = userDao.getUserByUserName("Kat15");
@@ -72,18 +76,40 @@ public class Inserter {
 //		u3.getId(), u3.getName(), u3.getUserName());
 		
 //		host test
-//		Date date = new Date();
-//		Host host = new Host(436188584,"Bruce","Bruce127","password","https://www.airbnb.com/users/show/2536",date, "Seattle, Washington, United States", "im new here", 0, 0);
-//		host = hostDao.create(host);
-//		System.out.format("Reading USER: id:%s n:%s un:%s hs:%s, ha:%s \n",
-//				host.getId(), host.getName(), host.getUserName(), host.getHostSince(), host.getHostAbout());
-//		
-//		
+//		Host h1 = hostDao.getHostByUserName("Bruce127");
+//		h1 = hostDao.delete(h1);
+		
+//		Listing l1 = listingDao.getListingById(53904425);
+//		l1 = listingDao.delete(l1);
+//		Neighborhood n1 = neighborhoodDao.getNeighborhoodFromNeighborhood("testNeighborhood");
+//		n1 = neighborhoodDao.deleteNeighborhood(n1);
+		Date date = new Date();
+		Host host = new Host(436188584,"Bruce","Bruce127","password","https://www.airbnb.com/users/show/2536",date, "Seattle, Washington, United States", "im new here", 0, 0);
+		host = hostDao.create(host);
+		System.out.format("Reading USER: id:%s n:%s un:%s hs:%s, ha:%s listingcount:%s totalLCount: %s \n",
+				host.getId(), host.getName(), host.getUserName(), host.getHostSince(), host.getHostAbout(), host.getHostListingCount(), host.getHostTotalListingCount());
+		
+		Neighborhood neighborhood = new Neighborhood("testNeighborhood", "testNeighborhoodGroup");
+		neighborhood = neighborhoodDao.create(neighborhood);
+		
+		Listing listing = new Listing(53904425, "https://www.airbnb.com/rooms/53904424", "testListing", "Our spacious 1 bedroom, 1 bath home", "nice neighborhood", "pic url", host, neighborhood, 2, "bathroom text", 1, 200, true, 0, date, date, "STR-OPLI-21-000328", false, 0, 0,Listing.RoomType.ENTIRE, "apt");
+		listing = listingDao.create(listing);
+		
+		System.out.format("Reading Listing: id:%s n:%s hostID:%s \n",
+				listing.getID(), listing.getName(), listing.getHost().getId());
+		
+		System.out.format("Reading USER: id:%s n:%s un:%s hs:%s, ha:%s listingcount:%s totalLCount: %s \n",
+				host.getId(), host.getName(), host.getUserName(), host.getHostSince(), host.getHostAbout(), host.getHostListingCount(), host.getHostTotalListingCount());
+		neighborhood = neighborhoodDao.deleteNeighborhood(neighborhood);
+		listing = listingDao.delete(listing);
+		System.out.format("Reading USER: id:%s n:%s un:%s hs:%s, ha:%s listingcount:%s totalLCount: %s \n",
+				host.getId(), host.getName(), host.getUserName(), host.getHostSince(), host.getHostAbout(), host.getHostListingCount(), host.getHostTotalListingCount());
+		host = hostDao.delete(host);
 //		Host h1 = hostDao.getHostByUserName("Bruce127");
 //		System.out.format("Reading USER: id:%s n:%s un:%s hs:%s, ha:%s \n",
 //		h1.getId(), h1.getName(), h1.getUserName(), h1.getHostSince(), h1.getHostAbout());
-//		
-//		hostDao.delete(h1);
+		
+
 		
 //		guest test
 		
@@ -97,6 +123,8 @@ public class Inserter {
 //				g1.getId(), g1.getName(), g1.getUserName());
 //		
 //		System.out.print(guestDao.delete(guest));
+		
+		
 		
 		
 		
@@ -120,47 +148,47 @@ public class Inserter {
 
 		// Host Rating
 		// Create
-		Host host = new Host(1, "hostName", "hostUserName", "password", "hostUrl", new Date(), "hostLocation",
-				"hostAbout", 100, 100);
-		HostRating hostRating1 = new HostRating(1, host, 5.0);
-		HostRating hostRating2 = new HostRating(2, host, 5.0);
-		hostRatingDao.create(hostRating1);
-		System.out.println("********** Create Host Rating ************");
-		System.out.println("ID: " + hostRating1.getId());
-		System.out.println("HostId: " + hostRating1.getHost().getId());
-		System.out.println("Rating: " + hostRating1.getRating());
-		System.out.println("");
-
-		// Read
-		hostRating1 = hostRatingDao.getHostRatingById(1);
-		System.out.println("********** Get a Host Rating by Host Rating ID ************");
-		System.out.println("ID: " + hostRating1.getId());
-		System.out.println("HostId: " + hostRating1.getHost().getId());
-		System.out.println("Rating: " + hostRating1.getRating());
-		System.out.println("");
-
-		List<HostRating> hostRatings = hostRatingDao.getHostRatingByHostId(1);
-		System.out.println("********** Get a Host Rating by Host ID ************");
-		for (HostRating hostRating : hostRatings) {
-			System.out.println("ID: " + hostRating.getId());
-			System.out.println("HostId: " + hostRating.getHost().getId());
-			System.out.println("Rating: " + hostRating.getRating());
-			System.out.println("");
-		}
-
-		// Update
-		hostRating1 = hostRatingDao.updateHostRatingRating(hostRating1, 2.5);
-		System.out.println("********** Update Host Rating Rating ************");
-		System.out.println("ID: " + hostRating1.getId());
-		System.out.println("HostId: " + hostRating1.getHost().getId());
-		System.out.println("Rating: " + hostRating1.getRating());
-		System.out.println("");
-
-		// Delete
-		hostRating1 = hostRatingDao.delete(hostRating1);
-		System.out.println("********** Delete a Host Rating ************");
-		System.out.println(hostRating1);
-		System.out.println("");
+//		Host host = new Host(1, "hostName", "hostUserName", "password", "hostUrl", new Date(), "hostLocation",
+//				"hostAbout", 100, 100);
+//		HostRating hostRating1 = new HostRating(1, host, 5.0);
+//		HostRating hostRating2 = new HostRating(2, host, 5.0);
+//		hostRatingDao.create(hostRating1);
+//		System.out.println("********** Create Host Rating ************");
+//		System.out.println("ID: " + hostRating1.getId());
+//		System.out.println("HostId: " + hostRating1.getHost().getId());
+//		System.out.println("Rating: " + hostRating1.getRating());
+//		System.out.println("");
+//
+//		// Read
+//		hostRating1 = hostRatingDao.getHostRatingById(1);
+//		System.out.println("********** Get a Host Rating by Host Rating ID ************");
+//		System.out.println("ID: " + hostRating1.getId());
+//		System.out.println("HostId: " + hostRating1.getHost().getId());
+//		System.out.println("Rating: " + hostRating1.getRating());
+//		System.out.println("");
+//
+//		List<HostRating> hostRatings = hostRatingDao.getHostRatingByHostId(1);
+//		System.out.println("********** Get a Host Rating by Host ID ************");
+//		for (HostRating hostRating : hostRatings) {
+//			System.out.println("ID: " + hostRating.getId());
+//			System.out.println("HostId: " + hostRating.getHost().getId());
+//			System.out.println("Rating: " + hostRating.getRating());
+//			System.out.println("");
+//		}
+//
+//		// Update
+//		hostRating1 = hostRatingDao.updateHostRatingRating(hostRating1, 2.5);
+//		System.out.println("********** Update Host Rating Rating ************");
+//		System.out.println("ID: " + hostRating1.getId());
+//		System.out.println("HostId: " + hostRating1.getHost().getId());
+//		System.out.println("Rating: " + hostRating1.getRating());
+//		System.out.println("");
+//
+//		// Delete
+//		hostRating1 = hostRatingDao.delete(hostRating1);
+//		System.out.println("********** Delete a Host Rating ************");
+//		System.out.println(hostRating1);
+//		System.out.println("");
 
 		// TODO: doesn't work yet, depends on Listing and Host tables, and replace below accordingly
     // Create
@@ -184,31 +212,31 @@ public class Inserter {
 
 
 		// Create a neighborhood
-		Neighborhood neighborhood = new Neighborhood("testNeighborhood", "testNeighborhoodGroup");
-		neighborhood = neighborhoodDao.create(neighborhood);
-		System.out.println("********** create neighborhood ************");
-		System.out.println(neighborhood.getNeighborhood());
-		System.out.println(neighborhood.getNeighborhoodGroup());
-		System.out.println("");
-
-		// Get a neighborhood by neighborhood name
-		neighborhood = neighborhoodDao.getNeighborhoodFromNeighborhood("testNeighborhood");
-		System.out.println("********** get a neighborhood by neighborhood name ************");
-		System.out.println(neighborhood.getNeighborhood());
-		System.out.println(neighborhood.getNeighborhoodGroup());
-		System.out.println("");
-
-		// Update a neighborhood group
-		neighborhood = neighborhoodDao.updateNeighborhoodGroup(neighborhood, "updated testNeighborhoodGroup");
-		System.out.println("********** update neighborhood group ************");
-		System.out.println(neighborhood.getNeighborhood());
-		System.out.println(neighborhood.getNeighborhoodGroup());
-		System.out.println("");
-
-		// Delete a neighborhood
-		neighborhood = neighborhoodDao.deleteNeighborhood(neighborhood);
-		System.out.println("********** delete neighborhood ************");
-		System.out.println(neighborhood);
+//		Neighborhood neighborhood = new Neighborhood("testNeighborhood", "testNeighborhoodGroup");
+//		neighborhood = neighborhoodDao.create(neighborhood);
+//		System.out.println("********** create neighborhood ************");
+//		System.out.println(neighborhood.getNeighborhood());
+//		System.out.println(neighborhood.getNeighborhoodGroup());
+//		System.out.println("");
+//
+//		// Get a neighborhood by neighborhood name
+//		neighborhood = neighborhoodDao.getNeighborhoodFromNeighborhood("testNeighborhood");
+//		System.out.println("********** get a neighborhood by neighborhood name ************");
+//		System.out.println(neighborhood.getNeighborhood());
+//		System.out.println(neighborhood.getNeighborhoodGroup());
+//		System.out.println("");
+//
+//		// Update a neighborhood group
+//		neighborhood = neighborhoodDao.updateNeighborhoodGroup(neighborhood, "updated testNeighborhoodGroup");
+//		System.out.println("********** update neighborhood group ************");
+//		System.out.println(neighborhood.getNeighborhood());
+//		System.out.println(neighborhood.getNeighborhoodGroup());
+//		System.out.println("");
+//
+//		// Delete a neighborhood
+//		neighborhood = neighborhoodDao.deleteNeighborhood(neighborhood);
+//		System.out.println("********** delete neighborhood ************");
+//		System.out.println(neighborhood);
 		
 		
 		// REVIEWS - not yet tested as it relies on Listing

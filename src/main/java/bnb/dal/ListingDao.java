@@ -35,40 +35,43 @@ public class ListingDao {
         + " NeighborhoodOverview, PictureUrl, HostID, Neighborhood, Accommodates,"
         + " BathroomsText, Bedrooms, Price, HasAvailability, NumberOfReviews, FirstReview,"
         + " LastReview, License, InstantBookable, Latitude, Longitude, RoomType, PropertyType) "
-        + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+        + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 
     Connection connection = null;
     PreparedStatement insertStmt = null;
 //    ResultSet resultKey = null;
-
+    
     try {
           connection = connectionManager.getConnection();
           insertStmt = connection.prepareStatement(insertListing);
+          HostDao hostDao = HostDao.getInstance();
 
           insertStmt.setInt(1, listing.getID());
           insertStmt.setString(2, listing.getListingURL());
-          insertStmt.setString(3, listing.getDescription());
-          insertStmt.setString(4, listing.getNeighborhoodOverview());
-          insertStmt.setString(5, listing.getPictureUrl());
-          insertStmt.setInt(6, listing.getHost().getId());
-          insertStmt.setString(7, listing.getNeighborhood().getNeighborhood());
-          insertStmt.setInt(8, listing.getAccommodates());
-          insertStmt.setString(9, listing.getBathroomsText());
-          insertStmt.setInt(10, listing.getBedrooms());
-          insertStmt.setDouble(11, listing.getPrice());
-          insertStmt.setBoolean(12, listing.isHasAvailability());
-          insertStmt.setInt(13, listing.getNumberOfReviews());
-          insertStmt.setTimestamp(14, new Timestamp(listing.getFirstReview().getTime()));
-          insertStmt.setTimestamp(15, new Timestamp(listing.getLastReview().getTime()));
-          insertStmt.setString(16, listing.getLicense());
-          insertStmt.setBoolean(17, listing.isInstantBookable());
-          insertStmt.setDouble(18, listing.getLatitude());
-          insertStmt.setDouble(19, listing.getLongitude());
-          insertStmt.setString(20, listing.getRoomType().getRoom());
-          insertStmt.setString(21, listing.getPropertyType());
+          insertStmt.setString(3, listing.getName());
+          insertStmt.setString(4, listing.getDescription());
+          insertStmt.setString(5, listing.getNeighborhoodOverview());
+          insertStmt.setString(6, listing.getPictureUrl());
+          insertStmt.setInt(7, listing.getHost().getId());
+          insertStmt.setString(8, listing.getNeighborhood().getNeighborhood());
+          insertStmt.setInt(9, listing.getAccommodates());
+          insertStmt.setString(10, listing.getBathroomsText());
+          insertStmt.setInt(11, listing.getBedrooms());
+          insertStmt.setDouble(12, listing.getPrice());
+          insertStmt.setBoolean(13, listing.isHasAvailability());
+          insertStmt.setInt(14, listing.getNumberOfReviews());
+          insertStmt.setTimestamp(15, new Timestamp(listing.getFirstReview().getTime()));
+          insertStmt.setTimestamp(16, new Timestamp(listing.getLastReview().getTime()));
+          insertStmt.setString(17, listing.getLicense());
+          insertStmt.setBoolean(18, listing.isInstantBookable());
+          insertStmt.setDouble(19, listing.getLatitude());
+          insertStmt.setDouble(20, listing.getLongitude());
+          insertStmt.setString(21, listing.getRoomType().getRoom());
+          insertStmt.setString(22, listing.getPropertyType());
 
           insertStmt.executeUpdate();
-
+          
+          hostDao.incrementHostListingCount(listing.getHost());
           return listing;
     } catch (SQLException e) {
       e.printStackTrace();
@@ -348,11 +351,16 @@ public class ListingDao {
     String deleteListing = "DELETE FROM Listing WHERE ID=?;";
 
     Connection connection = null;
-    PreparedStatement statement = null;
+    PreparedStatement deleteStmt = null;
     try {
       connection = connectionManager.getConnection();
-      statement = connection.prepareStatement(deleteListing);
-      statement.executeUpdate();
+      deleteStmt = connection.prepareStatement(deleteListing);
+      HostDao hostDao = HostDao.getInstance();
+      
+      deleteStmt.setInt(1, listing.getID());
+      deleteStmt.executeUpdate();
+      
+      hostDao.decrementHostListingCount(listing.getHost());
       return null;
     } catch (SQLException e) {
       e.printStackTrace();
@@ -361,8 +369,8 @@ public class ListingDao {
       if (connection != null) {
         connection.close();
       }
-      if (statement != null) {
-        statement.close();
+      if (deleteStmt != null) {
+    	  deleteStmt.close();
       }
     }
   }

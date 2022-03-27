@@ -157,6 +157,60 @@ public class HostDao extends UserDao {
 		return null;
 	}
 	
+    public Host incrementHostListingCount(Host host) throws SQLException {
+        Connection connection = null;
+        String updateHost = "UPDATE Host SET HostListingsCount=HostListingsCount + 1, HostTotalListingsCount=HostTotalListingsCount+ 1 WHERE ID=?;";
+        PreparedStatement updateStmt = null;
+
+        try {
+            connection = connectionManager.getConnection();
+            updateStmt = connection.prepareStatement(updateHost);
+            updateStmt.setInt(1, host.getId());
+            updateStmt.executeUpdate();
+
+            host.setHostListingCount(host.getHostListingCount() + 1);
+            host.setHostTotalListingCount(host.getHostTotalListingCount() + 1);
+            return host;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+            if (updateStmt != null) {
+                updateStmt.close();
+            }
+        }
+    }
+    
+    public Host decrementHostListingCount(Host host) throws SQLException {
+        Connection connection = null;
+        String updateHost = "UPDATE Host SET HostListingsCount=HostListingsCount - 1, HostTotalListingsCount=HostTotalListingsCount - 1 WHERE ID=?;";
+        PreparedStatement updateStmt = null;
+
+        try {
+            connection = connectionManager.getConnection();
+            updateStmt = connection.prepareStatement(updateHost);
+            updateStmt.setInt(1, host.getId());
+            updateStmt.executeUpdate();
+
+            host.setHostListingCount(host.getHostListingCount() - 1);
+            host.setHostTotalListingCount(host.getHostTotalListingCount() - 1);
+            return host;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+            if (updateStmt != null) {
+                updateStmt.close();
+            }
+        }
+    }
+	
 	public Host delete(Host host) throws SQLException {
 		String deleteHost = "DELETE FROM Host WHERE ID=?;";
 		Connection connection = null;
