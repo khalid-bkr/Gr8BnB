@@ -1,83 +1,76 @@
 package bnb.model;
 
 public class ListingRating {
-  public enum ScoreType {
+	public enum ScoreType {
     Rating, Accuracy, Cleanliness, Checkin, Communication, Location, Value
   }
 
   protected int id;
-  protected int listingId;
-  protected int hostId;
+  protected Listing listing;
+  protected Host host;
   protected ScoreType scoreType;
   protected double score;
+  
+	public ListingRating(int id, Listing listing, Host host, ScoreType scoreType, double score) {
+		this.id = id;
+		this.listing = listing;
+		this.host = host;
+		this.scoreType = scoreType;
+		this.score = score;
+	}
+	
+	public ListingRating(Listing listing, Host host, ScoreType scoreType, double score) {
+		this.listing = listing;
+		this.host = host;
+		this.scoreType = scoreType;
+		this.score = score;
+	}
 
-  public ListingRating(int id, int listingId, int hostId, ScoreType scoreType, double score) {
-    this.id = id;
-    this.listingId = listingId;
-    this.hostId = hostId;
-    this.scoreType = scoreType;
-    this.score = score;
-  }
+	public int getId() {
+		return id;
+	}
 
-  public ListingRating(int listingId, int hostId, ScoreType scoreType, double score) {
-    this.listingId = listingId;
-    this.hostId = hostId;
-    this.scoreType = scoreType;
-    this.score = score;
-  }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-  public ListingRating(int id) {
-    this.id = id;
-  }
+	public Listing getListing() {
+		return listing;
+	}
 
-  public int getId() {
-    return id;
-  }
+	public void setListing(Listing listing) {
+		this.listing = listing;
+	}
 
-  public void setId(int id) {
-    this.id = id;
-  }
+	public Host getHost() {
+		return host;
+	}
 
-  public int getListingId() {
-    return listingId;
-  }
+	public void setHost(Host host) {
+		this.host = host;
+	}
 
-  public void setListingId(int listingId) {
-    this.listingId = listingId;
-  }
+	public ScoreType getScoreType() {
+		return scoreType;
+	}
 
-  public int getHostId() {
-    return hostId;
-  }
+	public void setScoreType(ScoreType scoreType) {
+		this.scoreType = scoreType;
+	}
 
-  public void setHostId(int hostId) {
-    this.hostId = hostId;
-  }
+	public double getScore() {
+		return score;
+	}
 
-  public ScoreType getScoreType() {
-    return scoreType;
-  }
+	public void setScore(double score) {
+		this.score = score;
+	}
 
-  public void setScoreType(ScoreType scoreType) {
-    this.scoreType = scoreType;
-  }
+	@Override
+	public String toString() {
+		return "ListingRating [id=" + id + ", listing=" + listing + ", host=" + host + ", scoreType=" + scoreType
+				+ ", score=" + score + "]";
+	}
+  
 
-  public double getScore() {
-    return score;
-  }
-
-  public void setScore(double score) {
-    this.score = score;
-  }
-
-  @Override
-  public String toString() {
-    return "ListRating{" +
-      "id=" + id +
-      ", listingId=" + listingId +
-      ", hostId=" + hostId +
-      ", scoreType=" + scoreType +
-      ", score=" + score +
-      '}';
-  }
 }
