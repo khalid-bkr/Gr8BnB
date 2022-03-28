@@ -109,7 +109,14 @@ public class Inserter {
 //		System.out.format("Reading USER: id:%s n:%s un:%s hs:%s, ha:%s \n",
 //		h1.getId(), h1.getName(), h1.getUserName(), h1.getHostSince(), h1.getHostAbout());
 		
-
+		List<Listing> listingsbyn = new ArrayList<Listing>();
+		
+		listingsbyn = listingDao.getListingsByNeighborhood("Adams"); 
+		for (Listing l : listingsbyn) {
+			System.out.format("Reading Listing: id:%s n:%s hostID:%s \n",
+					l.getID(), l.getName(), l.getHost().getId());
+		}
+		
 		
 //		guest test
 		

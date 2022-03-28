@@ -152,6 +152,75 @@ public class ListingDao {
     }
     return null;
   }
+  
+  public List<Listing> getListingsByNeighborhood(String c_neighborhood) throws SQLException {
+	    List<Listing> listings = new ArrayList<>();
+	    String selectListings = "SELECT * FROM Listing INNER JOIN Neighborhood "
+	    		+ " ON Listing.Neighborhood = Neighborhood.Neighborhood "
+	    		+ "HAVING Listing.Neighborhood=?";
+
+
+	    Connection connection = null;
+	    PreparedStatement selectStmt = null;
+	    ResultSet results = null;
+
+	    try {
+	      connection = connectionManager.getConnection();
+	      selectStmt = connection.prepareStatement(selectListings);
+	      selectStmt.setString(1, c_neighborhood);
+	      HostDao hostDao = HostDao.getInstance();
+	      NeighborhoodDao neighborhoodDao = NeighborhoodDao.getInstance();
+
+	      results = selectStmt.executeQuery();
+	      while (results.next()) {
+
+	        int resultId = results.getInt("ID");
+	        String listingURL = results.getString("ListingUrl");
+	        String name = results.getString("Name");
+	        String description = results.getString("Description");
+	        String neighborhoodOverview = results.getString("NeighborhoodOverview");
+	        String  pictureUrl = results.getString("pictureUrl");
+	        Host host = hostDao.getHostById(results.getInt("HostId"));
+	        Neighborhood neighborhood =
+	            neighborhoodDao.getNeighborhoodFromNeighborhood(results.getString("Neighborhood"));
+	        int accommodates = results.getInt("Accommodates");
+	        String  bathroomsText = results.getString("BathroomsText");
+	        int bedrooms = results.getInt("Bedrooms");
+	        double price = results.getDouble("Price");
+	        boolean hasAvailability = results.getBoolean("hasAvailability");;
+	        int numberOfReviews = results.getInt("NumberOfReviews");
+	        Date firstReview = results.getDate("FirstReview");
+	        Date lastReview = results.getDate("LastReview");
+	        String  license = results.getString("License");
+	        boolean instantBookable = results.getBoolean("InstantBookable");;
+	        double latitude = results.getDouble("Latitude");
+	        double longitude = results.getDouble("Longitude");
+	        RoomType roomType = RoomType.fromString(results.getString("RoomType"));
+	        String  propertyType = results.getString("PropertyType");
+
+	        Listing listing = new Listing(resultId, listingURL, name, description, neighborhoodOverview,
+	            pictureUrl, host, neighborhood, accommodates,  bathroomsText, bedrooms, price, hasAvailability,
+	            numberOfReviews,  firstReview,  lastReview, license, instantBookable, latitude, longitude,
+	            roomType, propertyType);
+
+	        listings.add(listing);
+	      }
+	    } catch (SQLException e) {
+	      e.printStackTrace();
+	      throw e;
+	    } finally {
+	      if (connection != null) {
+	        connection.close();
+	      }
+	      if (selectStmt != null) {
+	        selectStmt.close();
+	      }
+	      if (results != null) {
+	        results.close();
+	      }
+	    }
+	    return listings;
+	  }
 
 
 
