@@ -1,0 +1,56 @@
+body {
+    background-color: #30475E;
+    background-size: contain;
+    height: 90vh;
+    color: #F5F5F5;
+}
+
+.table-style {
+    background-color: #F5F5F5;
+    padding: 1em;
+    border-color: #e43f5a;
+}
+
+
+.table-style th{
+    padding: 1em;
+}
+
+.table-style td {
+    padding: 1em;
+}
+
+input::placeholder {
+    color: grey;
+    opacity: 1;
+}
+
+nav {
+    background-color: #e43f5a;
+    margin-bottom: 3em;
+}
+
+.logo {
+    margin: 0;
+}
+
+.btn-main {
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    background: #e43f5a;
+    font-size: 16px;
+    line-height: normal;
+    color: white;
+    cursor: pointer;
+    margin: 0;
+}
+
+.header {
+    margin-bottom: 1em;
+}
+
+.search-box {
+    border: 1px solid #121212;
+    border-radius: 3px;
+}

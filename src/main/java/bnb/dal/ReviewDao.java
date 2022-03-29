@@ -7,6 +7,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,6 +82,65 @@ public class ReviewDao {
 		}
 	}
 
+    public Review createWithoutId(Review review) throws SQLException {
+        String insertReview =
+			"INSERT INTO Review(Date,ReviewerID,Comments,ListingID) " +
+			"VALUES(?,?,?,?);";
+		Connection connection = null;
+		PreparedStatement insertStmt = null;
+		ResultSet resultKey = null;
+		try {
+			connection = connectionManager.getConnection();
+			insertStmt = connection.prepareStatement(insertReview, Statement.RETURN_GENERATED_KEYS);
+
+			insertStmt.setDate(1, new Date (review.getDate().getTime()));
+			insertStmt.setInt(2, review.getGuest().getId());
+			insertStmt.setString(3, review.getComments());
+			insertStmt.setInt(4, review.getListing().getID());
+			insertStmt.executeUpdate();
+
+            resultKey = insertStmt.getGeneratedKeys();
+			Long reviewId = -1l;
+			if (resultKey.next()) {
+			    reviewId = resultKey.getLong(1);
+			} else {
+			    throw new SQLException("Unable to retrieve auto-generated key.");
+			}
+			review.setId(reviewId);
+
+			ListingDao listingDao = ListingDao.getInstance();
+			Listing associatedListing = listingDao.getListingById(review.getListing().getID());
+
+			// Increment NumberOfReviews for the associated listing
+			listingDao.incrementNumberOfReviews(associatedListing);
+
+			// Update FirstReview of the associated listing
+			if (associatedListing.getFirstReview() == null || (associatedListing.getFirstReview() != null && associatedListing.getFirstReview().after(review.getDate()))) {
+				listingDao.updateFirstReview(associatedListing, review.getDate());
+			}
+
+			// Update LastReview of the associated listing
+			if (associatedListing.getLastReview() == null || (associatedListing.getLastReview() != null && associatedListing.getLastReview().before(review.getDate()))) {
+				listingDao.updateLastReview(associatedListing, review.getDate());
+			}
+			return review;
+		} catch (SQLException e) {
+		    e.printStackTrace();
+		    throw e;
+		} finally {
+			if(connection != null) {
+				connection.close();
+			}
+			if(insertStmt != null) {
+				insertStmt.close();
+			}
+			if(resultKey != null) {
+				resultKey.close();
+			}
+		}
+    }
+
+
 	/**
 	 * Delete the Review instance.
 	 * This runs a DELETE statement.
@@ -90,6 +150,7 @@ public class ReviewDao {
 		Connection connection = null;
 		PreparedStatement deleteStmt = null;
 		try {
+			review = this.getReviewById(review.getId());
 			connection = connectionManager.getConnection();
 			deleteStmt = connection.prepareStatement(deleteReview);
 			deleteStmt.setLong(1, review.getId());
@@ -139,7 +200,7 @@ public class ReviewDao {
 	 */
 	public Review getReviewById(Long id) throws SQLException {
 		String selectReview =
-				"SELECT (ID, Date, ReviewerID, Comments, ListingID) " +
+				"SELECT ID, Date, ReviewerID, Comments, ListingID " +
 				"FROM Review " +
 				"WHERE ID=?;";
 		Connection connection = null;
@@ -242,9 +303,10 @@ public class ReviewDao {
 	public List<Review> getReviewsByListingId(Integer listingId) throws SQLException {
 		List<Review> reviews = new ArrayList<Review>();
 		String selectReview = 
-				"SELECT ID, Date, ReviewerID, Comments, ListingID) " +
+				"SELECT ID, Date, ReviewerID, Comments, ListingID " +
 				"FROM Review " +
-				"WHERE ListingID=?;";
+				"WHERE ListingID=? " +
+				"ORDER BY ID DESC;";
 		Connection connection = null;
 		PreparedStatement selectStmt = null;
 		ResultSet results = null;

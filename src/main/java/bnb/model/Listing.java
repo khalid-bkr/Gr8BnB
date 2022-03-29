@@ -113,7 +113,10 @@ public class Listing {
     this.propertyType = propertyType;
   }
 
-
+  public Listing(int id) {
+	  this.id = id;
+  }
+  
   public int getID() {
     return id;
   }
