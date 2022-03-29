@@ -27,7 +27,7 @@
 	<a class="btn btn-main mb-3" href="createreview?listingid=<c:out value="${fn:escapeXml(param.listingid) }"/>">Add A New Review</a>
     <table class="table table-striped rounded table-style">
         <thead class="thead-dark">
-        <tr>
+        <tr class="text-nowrap">
             <th>Review ID</th>
             <th>Listing ID</th>
             <th>Guest ID</th>
