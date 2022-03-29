@@ -1,5 +1,5 @@
 # This can be removed once we are all certain we are using the same database
-/ConnectionManager.java
+ConnectionManager.java
 
 build
 .DS_Store
