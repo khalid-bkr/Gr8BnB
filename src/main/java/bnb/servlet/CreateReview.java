@@ -47,7 +47,8 @@ public class CreateReview extends HttpServlet {
         Map<String, String> messages = new HashMap<String, String>();
         req.setAttribute("messages", messages);
 
-        int reviewerId = 15; // hard-coded for now
+//        int reviewerId = 15; // hard-coded for now
+        int reviewerId = Integer.parseInt(req.getParameter("userId"));
 
         Date date = new Date();
         String comment = req.getParameter("newcomment");

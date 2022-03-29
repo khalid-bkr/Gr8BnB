@@ -21,9 +21,17 @@
 	
 	<form action="createreview" method="post">
 	<div class="d-flex justify-content-center">
-		<textarea rows="5" cols="20" placeholder="Please input your comment here." class="form-control w-50 my-5" name="newcomment"></textarea>
+		
+		<div class="w-50 my-5">
+			<div class="fw-bold mb-1">Your Comment</div>
+			<textarea rows="5" cols="20" placeholder="Please input your comment here." class="form-control mb-3" name="newcomment" required></textarea>
+			<div class="fw-bold mb-1">Your User ID</div>
+			<input class="form-control w-50" placeholder="Please input your user id here." name="userId" required />
+		</div>
+		
 	</div>
 	<input type="hidden" name="listingId" value="${param.listingid}">
+	
 	<div class="d-flex justify-content-center mt-5"><input type="submit" class="btn btn-main" value="Submit Your Review" /></div>
 	</form>
 </div>
