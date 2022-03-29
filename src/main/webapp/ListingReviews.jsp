@@ -43,7 +43,7 @@
                 <td><a href="listings?listingid=<c:out value="${fn:escapeXml(param.listingid) }"/>">${review.getListing().getID()}</a></td>
                 <td>${review.getGuest().getId()}</td>
                 <td>${review.getComments()}</td>
-                <td class="text-nowrap"><c:out value="${review.getDate()}"/></td>
+                <td class="text-nowrap"><fmt:formatDate value="${review.getDate()}" pattern="MM-dd-yyyy hh:mm:sa"/></td>
                 <td><a class="btn btn-main" href="deletereview?listingid=<c:out value="${fn:escapeXml(param.listingid) }"/>&reviewid=<c:out value="${review.getId()}"/>">Delete</a></td>
             </tr>
         </c:forEach>
