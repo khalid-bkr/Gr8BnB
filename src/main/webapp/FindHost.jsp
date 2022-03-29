@@ -11,7 +11,7 @@
 <!-- CSS only -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
-<title>Gr8BnB</title>
+<title>Gr8BnB - Find Host</title>
 <style>
 	body {
 		background-color: #30475E;
@@ -73,7 +73,6 @@
 	a {
 		text-decoration: none;
 	}
-	
 
 
 </style>
@@ -86,7 +85,7 @@
       >
         <div class="container d-flex justify-content-between">
         	<div>
-        		 <a class="" href=""><p class="logo navbar-brand">GR8<strong>BnB</strong></p></a>
+        		<a class="" href="index"><p class="logo navbar-brand">GR8<strong>BnB</strong></p></a>
         	</div>
             
 
@@ -99,7 +98,7 @@
                 <a class="nav-link" href="guestcreate">Sign up</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="findhost">Find Host</a>
+                <a class="nav-link" href="">Find Host</a>
               </li>
             </ul>
           </div>
@@ -107,10 +106,10 @@
       </nav>
       <!--/.Navbar -->
       
-   	<form action="index" method="post" class="container">
-		<h1 class="header d-flex justify-content-center">Search for Listings by neighborhood name</h1>
+   	<form action="findhost" method="post" class="container">
+		<h1 class="header d-flex justify-content-center">Search for Host by UserName</h1>
 		<p class="d-flex justify-content-center">
-			<input id="neighborhood" name="neighborhood" placeholder="Neighborhood Name" class="search-box" value="${fn:escapeXml(param.neighborhood)}">
+			<input id="userName" name="username" placeholder="Host UserName" class="search-box" value="${fn:escapeXml(param.username)}">
 		</p>
 		<div class="d-flex flex-column" >
 			<div class="d-flex justify-content-center">
@@ -123,33 +122,35 @@
 	
 		<br/>
 	<div class="container">
-		<h1 class="d-flex justify-content-center">Matching Listings</h1>
+		<h1 class="d-flex justify-content-center">Matching Host</h1>
         <table class="table table-striped rounded table-style">
         <thead class="thead-dark">
             <tr>
-                <th>Listing ID</th>
-                <th>Listing Name</th>
-                <th>Description</th>
-                <th>Host</th>
-                <th>Reviews</th>
-                <th>Rating</th>
-                <th>Delete Listing</th>
-                <th>Update Listing</th>
+                <th>Host ID</th>
+                <th>Host Name</th>
+                <th>Host UserName</th>
+                <th>Host Since</th>
+                <th>Host About</th>
+                <th>Host Location</th>
+                <th>Number of Listings</th>
+                <th>Listings</th>
+                <th>Delete Host</th>
             </tr>
             </thead>
             <tbody>
-	            <c:forEach items="${listings}" var="listing" >
-	                <tr>
-	                    <td><c:out value="${listing.getID()}" /></td>
-	                    <td><c:out value="${listing.getName()}" /></td>
-	                    <td><c:out value="${listing.getDescription()}" /></td>
-	                    <td><a class="btn btn-main" href="=<c:out value=""/>">Host</a></td>
-	                    <td><a class="btn btn-main" href="=<c:out value=""/>">Reviews</a></td>
-	                    <td><a class="btn btn-main" href="=<c:out value=""/>">Rating</a></td>
-	                    <td><a class="btn btn-main" href="=<c:out value=""/>">Delete</a></td>
-	                    <td><a class="btn btn-main" href="=<c:out value=""/>">Update</a></td>
-	                </tr>
-	            </c:forEach>
+                <tr>
+                <c:if test="${not empty host }">
+                    <td><c:out value="${host.getId()}" /></td>
+                    <td><c:out value="${host.getName()}" /></td>
+                    <td><c:out value="${host.getUserName()}" /></td>
+                    <td><c:out value="${host.getHostSince()}" /></td>
+                    <td><c:out value="${host.getHostAbout()}" /></td>
+                    <td><c:out value="${host.getHostLocation()}" /></td>
+                    <td><c:out value="${host.getHostListingCount()}" /></td>
+                    <td><a class="btn btn-main" href="=<c:out value=""/>">Listings</a></td>
+                    <td><a class="btn btn-main" href="=<c:out value=""/>">Delete</a></td>
+                </c:if>
+                </tr>
             </tbody>
 
        </table>

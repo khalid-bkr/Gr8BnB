@@ -6,11 +6,11 @@
   </welcome-file-list>
   <!--
   <servlet>
-    <servlet-name>FindUsers</servlet-name>
-    <servlet-class>blog.servlet.FindUsers</servlet-class>
+    <servlet-name>FindHost</servlet-name>
+    <servlet-class>bnb.servlet.FindHost</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>FindUsers</servlet-name>
+    <servlet-name>FindHost</servlet-name>
     <url-pattern>/findusers</url-pattern>
   </servlet-mapping>
   -->
