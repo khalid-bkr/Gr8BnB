@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import bnb.dal.UserDao;
 import bnb.model.*;
@@ -24,19 +25,29 @@ public class UserDao {
 	}
 
 	public User create(User user) throws SQLException {
-		String insertUser = "INSERT INTO User(ID, Name, UserName, Password) VALUES(?,?,?,?);";
+		String insertUser = "INSERT INTO User(Name, UserName, Password) VALUES(?,?,?);";
 		Connection connection = null;
 		PreparedStatement insertStmt = null;
 		try {
 			connection = connectionManager.getConnection();
-			insertStmt = connection.prepareStatement(insertUser);
+			insertStmt = connection.prepareStatement(insertUser, Statement.RETURN_GENERATED_KEYS);
 			
-			insertStmt.setInt(1, user.getId());
-			insertStmt.setString(2, user.getName());
-			insertStmt.setString(3, user.getUserName());
-			insertStmt.setString(4, user.getPassword());
+//			insertStmt.setInt(1, user.getId());
+			insertStmt.setString(1, user.getName());
+			insertStmt.setString(2, user.getUserName());
+			insertStmt.setString(3, user.getPassword());
+			
 
 			insertStmt.executeUpdate();
+			
+	      ResultSet key = insertStmt.getGeneratedKeys();
+	      int userId = -1;
+	      if (key.next()) {
+	        userId = key.getInt(1);
+	      } else {
+	        throw new SQLException("Unable to get auto-generated key: ListingId");
+	      }
+	      user.setId(userId);
 
 			return user;
 		} catch (SQLException e) {

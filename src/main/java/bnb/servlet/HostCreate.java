@@ -1,6 +1,5 @@
 package bnb.servlet;
 
-
 import bnb.dal.*;
 import bnb.model.*;
 
@@ -20,14 +19,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-@WebServlet("/guestcreate")
-public class GuestCreate extends HttpServlet {
+@WebServlet("/hostcreate")
+public class HostCreate extends HttpServlet {
 	
-	protected GuestDao guestDao;
+	protected HostDao hostDao;
 	
 	@Override
 	public void init() throws ServletException {
-		guestDao = GuestDao.getInstance();
+		hostDao = HostDao.getInstance();
 	}
 	
 	@Override
@@ -37,7 +36,7 @@ public class GuestCreate extends HttpServlet {
         Map<String, String> messages = new HashMap<String, String>();
         req.setAttribute("messages", messages);
         //Just render the JSP.   
-        req.getRequestDispatcher("/GuestCreate.jsp").forward(req, resp);
+        req.getRequestDispatcher("/HostCreate.jsp").forward(req, resp);
 	}
 	
 	@Override
@@ -58,9 +57,14 @@ public class GuestCreate extends HttpServlet {
         	String name = req.getParameter("name");
         	String username = req.getParameter("username");
         	String password = req.getParameter("password");
+        	String hostUrl = req.getParameter("hosturl");
+        	String hostLocation = req.getParameter("hostlocation");
+        	String hostAbout = req.getParameter("hostabout");
+        	Date hostSince = new Date();
+        	
 	        try {
-	        	Guest guest = new Guest(name, username, password);
-	        	guest = guestDao.create(guest);
+	        	Host host = new Host(name, username, password, hostUrl, hostSince, hostLocation, hostAbout, 0,0);
+	        	host = hostDao.create(host);
 	        	messages.put("success", "Successfully created " + userName);
 	        } catch (SQLException e) {
 				e.printStackTrace();
@@ -68,6 +72,7 @@ public class GuestCreate extends HttpServlet {
 	        }
         }
         
-        req.getRequestDispatcher("/GuestCreate.jsp").forward(req, resp);
+        req.getRequestDispatcher("/HostCreate.jsp").forward(req, resp);
     }
 }
+

@@ -92,7 +92,7 @@
           <div class="" id="">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link" href="">Become a Host</a>
+                <a class="nav-link" href="hostcreate">Become a Host</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="guestcreate">Sign up</a>
@@ -148,7 +148,7 @@
                     <td><c:out value="${host.getHostLocation()}" /></td>
                     <td><c:out value="${host.getHostListingCount()}" /></td>
                     <td><a class="btn btn-main" href="=<c:out value=""/>">Listings</a></td>
-                    <td><a class="btn btn-main" href="=<c:out value=""/>">Delete</a></td>
+                    <td><a class="btn btn-main" href="hostdelete?username=<c:out value="${host.getUserName()}"/>">Delete</a></td>
                 </c:if>
                 </tr>
             </tbody>

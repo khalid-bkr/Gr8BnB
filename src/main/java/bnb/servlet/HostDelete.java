@@ -20,14 +20,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-@WebServlet("/guestcreate")
-public class GuestCreate extends HttpServlet {
+@WebServlet("/hostdelete")
+public class HostDelete extends HttpServlet {
 	
-	protected GuestDao guestDao;
+	protected HostDao hostDao;
 	
 	@Override
 	public void init() throws ServletException {
-		guestDao = GuestDao.getInstance();
+		hostDao = HostDao.getInstance();
 	}
 	
 	@Override
@@ -37,7 +37,8 @@ public class GuestCreate extends HttpServlet {
         Map<String, String> messages = new HashMap<String, String>();
         req.setAttribute("messages", messages);
         //Just render the JSP.   
-        req.getRequestDispatcher("/GuestCreate.jsp").forward(req, resp);
+        messages.put("title", "Delete Host");
+        req.getRequestDispatcher("/HostDelete.jsp").forward(req, resp);
 	}
 	
 	@Override
@@ -50,24 +51,28 @@ public class GuestCreate extends HttpServlet {
         // Retrieve and validate name.
         String userName = req.getParameter("username");
         if (userName == null || userName.trim().isEmpty()) {
-            messages.put("success", "Invalid UserName");
+            messages.put("title", "Invalid UserName");
+            messages.put("disableSubmit", "true");
         } else {
-        	
-        	
-//        	int guestId = Integer.parseInt(req.getParameter("id"));
-        	String name = req.getParameter("name");
-        	String username = req.getParameter("username");
-        	String password = req.getParameter("password");
-	        try {
-	        	Guest guest = new Guest(name, username, password);
-	        	guest = guestDao.create(guest);
-	        	messages.put("success", "Successfully created " + userName);
-	        } catch (SQLException e) {
-				e.printStackTrace();
-				throw new IOException(e);
-	        }
+        	// Delete the Host.
+	        Host host;
+			try {
+				host = hostDao.getHostByUserName(userName);
+	        	host = hostDao.delete(host);
+	        	// Update the message.
+		        if (host == null) {
+		            messages.put("title", "Successfully deleted " + userName);
+		            messages.put("disableSubmit", "true");
+		        } else {
+		        	messages.put("title", "Failed to delete " + userName);
+		        	messages.put("disableSubmit", "false");
+		        }
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
         }
         
-        req.getRequestDispatcher("/GuestCreate.jsp").forward(req, resp);
+        req.getRequestDispatcher("/HostDelete.jsp").forward(req, resp);
     }
 }
+
