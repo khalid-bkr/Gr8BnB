@@ -29,7 +29,6 @@
         <thead class="thead-dark">
         <tr class="text-nowrap">
             <th>Review ID</th>
-            <th>Listing ID</th>
             <th>Guest ID</th>
             <th>Comments</th>
             <th>Created Date</th>
@@ -40,7 +39,6 @@
         <c:forEach items="${reviews}" var="review">
             <tr>
                 <td><c:out value="${review.getId()}"/></td>
-                <td><a href="listings?listingid=<c:out value="${fn:escapeXml(param.listingid) }"/>">${review.getListing().getID()}</a></td>
                 <td>${review.getGuest().getId()}</td>
                 <td>${review.getComments()}</td>
                 <td class="text-nowrap"><fmt:formatDate value="${review.getDate()}" pattern="MM-dd-yyyy hh:mm:sa"/></td>
