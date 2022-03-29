@@ -1,4 +1,18 @@
+# This can be removed once we are all certain we are using the same database
+ConnectionManager.java
+
 build
+.DS_Store
+
+# Intellij
 .idea/
 *.iml
+
+
+# Eclipse
+.classpath
+.project
+.settings/
+
 *.class
+
