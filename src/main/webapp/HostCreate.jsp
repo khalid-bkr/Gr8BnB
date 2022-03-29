@@ -126,10 +126,10 @@
           <div class="" id="">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link" href="hostcreate">Become a Host</a>
+                <a class="nav-link" href="">Become a Host</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="">Sign up</a>
+                <a class="nav-link" href="guestcreate">Sign up</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="findhost">Find Host</a>
@@ -145,13 +145,13 @@
      <div class="container">
         <div class="row">
           <div class="col-12">
-            <h2 class="d-flex justify-content-center">Sign Up</h2>
+            <h2 class="d-flex justify-content-center">Become a Host</h2>
           </div>
         </div>
         <div class="row">
           <div class="col-12">
             <div class="contact-form">
-              <form action="guestcreate" method="post">
+              <form action="hostcreate" method="post">
                 <div class="row">
                   <div class="col-12 col-md-12">
                     <div class="form-group">
@@ -185,6 +185,36 @@
                       />
                     </div>
                     <div class="form-group">
+                      <input
+                        id="hosturl"
+                        type="text"
+                        name="hosturl"
+                        class="form-control"
+                        placeholder="Your URL"
+                        value=""
+                      />
+                    </div>
+                    <div class="form-group">
+                      <input
+                        id="hostlocation"
+                        type="text"
+                        name="hostlocation"
+                        class="form-control"
+                        placeholder="Your Location"
+                        value=""
+                      />
+                    </div>
+                   <div class="form-group">
+                      <input
+                        id="hostabout"
+                        type="text"
+                        name="hostabout"
+                        class="form-control"
+                        placeholder="Your Description"
+                        value=""
+                      />
+                    </div>
+                    <div class="form-group">
 	                      <div class="d-flex justify-content-start align-items-start"  >
 	                        <input
 	                          type="submit"
@@ -192,7 +222,7 @@
 	                          class="btn-main"
 	                          value="Sign Up"
 	                        />
-	                      </div>
+	                </div>
                    			<p id="status" class="d-flex justify-content-center"></p>
                     </div>
                   </div>

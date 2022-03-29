@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -30,15 +31,16 @@ public class HostDao extends UserDao {
 
 	public Host create(Host host) throws SQLException {
 		// Insert into the superclass table first.
-		create(new User(host.getId(), host.getName(), host.getUserName(), host.getPassword()));
-	
+		UserDao userDao = UserDao.getInstance();
+		User parent = create(new User(host.getName(), host.getUserName(), host.getPassword()));
+		parent = userDao.create(parent);
 		String insertHost = "INSERT INTO Host(ID, HostUrl, HostSince, HostLocation, HostAbout, HostListingsCount, HostTotalListingsCount) VALUES(?,?,?,?,?,?,?);";
 		Connection connection = null;
 		PreparedStatement insertStmt = null;
 		try {
 			connection = connectionManager.getConnection();
 			insertStmt = connection.prepareStatement(insertHost);
-			insertStmt.setInt(1, host.getId());
+			insertStmt.setInt(1, parent.getId());
 			insertStmt.setString(2, host.getHostUrl());
 			insertStmt.setTimestamp(3, new Timestamp(host.getHostSince().getTime()));
 			insertStmt.setString(4, host.getHostLocation());
@@ -47,6 +49,8 @@ public class HostDao extends UserDao {
 			insertStmt.setInt(6, 0);
 			insertStmt.setInt(7, 0);
 			insertStmt.executeUpdate();
+			
+			host.setId(parent.getId());
 			return host;
 		} catch (SQLException e) {
 			e.printStackTrace();
