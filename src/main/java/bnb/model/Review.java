@@ -16,7 +16,19 @@ public class Review {
 		this.comments = comments;
 		this.listing = listing;
 	}
+	
+	public Review(Date date, Guest guest, String comments, Listing listing) {
+		this.id = id;
+		this.date = date;
+		this.guest = guest;
+		this.comments = comments;
+		this.listing = listing;
+	}
 
+	public Review(Long id) {
+		this.id = id;
+	}
+	
 	public Long getId() {
 		return id;
 	}

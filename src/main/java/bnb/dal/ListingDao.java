@@ -551,8 +551,8 @@ public class ListingDao {
 	    try {
 	      connection = connectionManager.getConnection();
 	      updateStmt = connection.prepareStatement(updateListingFirstReview);
-	      updateStmt.setDate(1, new java.sql.Date (reviewDate.getTime()));
-	      updateStmt.setInt(1, listing.getID());
+	      updateStmt.setDate(1, new java.sql.Date(reviewDate.getTime()));
+	      updateStmt.setInt(2, listing.getID());
 
 	      updateStmt.executeUpdate();
 	      
