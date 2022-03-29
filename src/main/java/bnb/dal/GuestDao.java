@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import java.sql.Statement;
 
 import bnb.model.Guest;
 import bnb.model.User;
@@ -24,16 +24,20 @@ public class GuestDao extends UserDao {
 	
 	public Guest create(Guest guest) throws SQLException {
 		// Insert into the superclass table first.
-		create(new User(guest.getId(), guest.getName(), guest.getUserName(), guest.getPassword()));
-	
+		UserDao userDao = UserDao.getInstance();
+		User parent = create(new User(guest.getName(), guest.getUserName(), guest.getPassword()));
+		parent = userDao.create(parent);
 		String insertGuest = "INSERT INTO Guest(ID) VALUES(?);";
 		Connection connection = null;
 		PreparedStatement insertStmt = null;
 		try {
 			connection = connectionManager.getConnection();
 			insertStmt = connection.prepareStatement(insertGuest);
-			insertStmt.setInt(1, guest.getId());
+			insertStmt.setInt(1, parent.getId());
 			insertStmt.executeUpdate();
+		      
+			
+			guest.setId(parent.getId());
 			return guest;
 		} catch (SQLException e) {
 			e.printStackTrace();

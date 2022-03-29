@@ -156,16 +156,6 @@
                   <div class="col-12 col-md-12">
                     <div class="form-group">
                       <input
-                        id="id"
-                        type="text"
-                        name="id"
-                        class="form-control"
-                        placeholder="ID"
-                        value=""
-                      />
-                    </div>
-                    <div class="form-group">
-                      <input
                         id="name"
                         type="text"
                         name="name"

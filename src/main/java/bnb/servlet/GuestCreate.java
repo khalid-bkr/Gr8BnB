@@ -54,15 +54,13 @@ public class GuestCreate extends HttpServlet {
         } else {
         	// Create the BlogUser.
         	
-        	 new Guest(436188585,"Bruce","Bruce128","password");
         	
-        	int guestId = Integer.parseInt(req.getParameter("id"));
+//        	int guestId = Integer.parseInt(req.getParameter("id"));
         	String name = req.getParameter("name");
         	String username = req.getParameter("username");
         	String password = req.getParameter("password");
 	        try {
-	        	// Exercise: parse the input for StatusLevel.
-	        	Guest guest = new Guest(guestId, name, username, password);
+	        	Guest guest = new Guest(name, username, password);
 	        	guest = guestDao.create(guest);
 	        	messages.put("success", "Successfully created " + userName);
 	        } catch (SQLException e) {

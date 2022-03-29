@@ -64,13 +64,13 @@ public class Inserter {
 //		System.out.format("Reading USER: id:%s n:%s un:%s \n",
 //		u1.getId(), u1.getName(), u1.getUserName());
 		
-//		User user = new User(436188584,"Bruce","Bruce127","password");
-//		user = userDao.create(user);
-//		User u2 = userDao.getUserByUserName("Bruce127");
-//		System.out.format("Reading USER: id:%s n:%s un:%s \n",
-//		u2.getId(), u2.getName(), u2.getUserName());
+		User user = new User("Bruce","Bruce120","password");
+		user = userDao.create(user);
+		user = userDao.getUserByUserName("Bruce120");
+		System.out.format("Reading USER: id:%s n:%s un:%s \n",
+		user.getId(), user.getName(), user.getUserName());
 		
-//		userDao.delete(u2);
+		userDao.delete(user);
 //		User u3 = userDao.getUserByUserName("Bruce127");
 //		System.out.format("Reading USER: id:%s n:%s un:%s \n",
 //		u3.getId(), u3.getName(), u3.getUserName());
@@ -84,7 +84,7 @@ public class Inserter {
 //		Neighborhood n1 = neighborhoodDao.getNeighborhoodFromNeighborhood("testNeighborhood");
 //		n1 = neighborhoodDao.deleteNeighborhood(n1);
 		Date date = new Date();
-		Host host = new Host(436188584,"Bruce","Bruce127","password","https://www.airbnb.com/users/show/2536",date, "Seattle, Washington, United States", "im new here", 0, 0);
+		Host host = new Host("Bruce","Bruce127","password","https://www.airbnb.com/users/show/2536",date, "Seattle, Washington, United States", "im new here", 0, 0);
 		host = hostDao.create(host);
 		System.out.format("Reading USER: id:%s n:%s un:%s hs:%s, ha:%s listingcount:%s totalLCount: %s \n",
 				host.getId(), host.getName(), host.getUserName(), host.getHostSince(), host.getHostAbout(), host.getHostListingCount(), host.getHostTotalListingCount());
