@@ -15,7 +15,7 @@ import bnb.dal.HostRatingDao;
 import bnb.model.Host;
 import bnb.model.HostRating;
 
-@WebServlet("/hostRatingCreate")
+@WebServlet("/hostratingcreate")
 public class HostRatingCreate extends HttpServlet {
 	protected HostRatingDao hostRatingDao;
 	
