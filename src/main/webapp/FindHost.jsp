@@ -95,7 +95,7 @@
                 <a class="nav-link" href="">Become a Host</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="">Sign up</a>
+                <a class="nav-link" href="guestcreate">Sign up</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="">Find Host</a>
