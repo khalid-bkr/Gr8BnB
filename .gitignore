@@ -1,3 +1,11 @@
-build
+# Intellij
 .idea/
 *.iml
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+build
+.DS_Store
