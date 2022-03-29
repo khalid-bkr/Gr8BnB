@@ -248,76 +248,90 @@ public class Inserter {
 		
 		// REVIEWS - not yet tested as it relies on Listing
 		
-		GuestDao guestDaoForReview = GuestDao.getInstance();
-		ListingDao listingDaoForReview = ListingDao.getInstance();
-		// Note: these are real ids from actual Gr8Bnb data
-		Guest sampleGuest1 = guestDaoForReview.getGuestById(436188585);
-		Listing sampleListing1 = listingDaoForReview.getListingById(2318);
-		Guest sampleGuest2 = guestDaoForReview.getGuestById(436188585);
-		Listing sampleListing2 = listingDaoForReview.getListingById(2318);
-		
-		// Create Reviews
-		System.out.println("********** create review ************");
-		String sampleDateString = "2018-10-01";
-		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-		Date sampleDate = null;
-		try {
-			sampleDate = dateFormatter.parse(sampleDateString);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		
-		if (sampleDate != null) {
-			Review review1 = new Review(Long.valueOf(1), sampleDate, sampleGuest1, "Lovely place to stay!", sampleListing1);
-			review1 = reviewDao.create(review1);
-			System.out.format("\tCreating review: id: %d, date: %s, reviewer id: %d, comments: %s, listing id: %s\n", 
-					review1.getId(), review1.getDate().toString(), review1.getGuest().getId(), review1.getComments(), review1.getListing().getID());
-			Review review2 = new Review(Long.valueOf(2), sampleDate, sampleGuest1, "Excellent!", sampleListing2);
-			review2 = reviewDao.create(review2);
-			System.out.format("\tCreating review: id: %d, date: %s, reviewer id: %d, comments: %s, listing id: %s\n", 
-					review2.getId(), review2.getDate().toString(), review2.getGuest().getId(), review2.getComments(), review2.getListing().getID());
-			Review review3 = new Review(Long.valueOf("323532651363"), null, sampleGuest2, "Nice and cozy", sampleListing2);
-			review3 = reviewDao.create(review3);
-			System.out.format("\tCreating review: id: %d, date: %s, reviewer id: %d, comments: %s, listing id: %s\n", 
-					review2.getId(), review2.getDate().toString(), review2.getGuest().getId(), review2.getComments(), review2.getListing().getID());
-		}
-		
+//		GuestDao guestDaoForReview = GuestDao.getInstance();
+//		ListingDao listingDaoForReview = ListingDao.getInstance();
+//		// Note: these are real ids from actual Gr8Bnb data
+//		Guest sampleGuest1 = guestDaoForReview.getGuestById(436188585);
+//		Listing sampleListing1 = listingDaoForReview.getListingById(2318);
+//		Guest sampleGuest2 = guestDaoForReview.getGuestById(436188585);
+//		Listing sampleListing2 = listingDaoForReview.getListingById(2318);
+//		
+//		// Create Reviews
+//		System.out.println("********** create review ************");
+//		String sampleDateString = "2018-10-01";
+//		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+//		Date sampleDate = null;
+//		try {
+//			sampleDate = dateFormatter.parse(sampleDateString);
+//		} catch (ParseException e) {
+//			e.printStackTrace();
+//		}
+//		
+//		if (sampleDate != null) {
+//			Review review1 = new Review(Long.valueOf(1), sampleDate, sampleGuest1, "Lovely place to stay!", sampleListing1);
+//			review1 = reviewDao.create(review1);
+//			System.out.format("\tCreating review: id: %d, date: %s, reviewer id: %d, comments: %s, listing id: %s\n", 
+//					review1.getId(), review1.getDate().toString(), review1.getGuest().getId(), review1.getComments(), review1.getListing().getID());
+//			Review review2 = new Review(Long.valueOf(2), sampleDate, sampleGuest1, "Excellent!", sampleListing2);
+//			review2 = reviewDao.create(review2);
+//			System.out.format("\tCreating review: id: %d, date: %s, reviewer id: %d, comments: %s, listing id: %s\n", 
+//					review2.getId(), review2.getDate().toString(), review2.getGuest().getId(), review2.getComments(), review2.getListing().getID());
+//			Review review3 = new Review(Long.valueOf("323532651363"), null, sampleGuest2, "Nice and cozy", sampleListing2);
+//			review3 = reviewDao.create(review3);
+//			System.out.format("\tCreating review: id: %d, date: %s, reviewer id: %d, comments: %s, listing id: %s\n", 
+//					review2.getId(), review2.getDate().toString(), review2.getGuest().getId(), review2.getComments(), review2.getListing().getID());
+//		}
+
+		// Create Review without id
+		System.out.println("********** create review without id ************");
+		Review reviewNoId = new Review(new Date(), new Guest(15), "Test for insert a new review", new Listing(9419));
+		reviewNoId = reviewDao.createWithoutId(reviewNoId);
+		System.out.println(reviewNoId.getId());
+
 		// Get Review by Id
 		System.out.println("********** get review by id ************");
-		List<String> reviewIdStrings = new ArrayList<>(Arrays.asList("1", "2", "323532651363"));
+//		List<String> reviewIdStrings = new ArrayList<>(Arrays.asList("1", "2", "323532651363"));
+//		
+//		for (String idString : reviewIdStrings) {
+//			Review review = reviewDao.getReviewById(Long.parseLong(idString));
+//			System.out.format("\tReading review with id '%s': id: %d, date: %s, reviewer id: %d, comments: %s, listing id: %s\n",
+//					idString, review.getId(), review.getDate().toString(), review.getGuest().getId(), review.getComments(), review.getListing().getID());
+//		}
+		Review searchedReview = reviewDao.getReviewById(16130l);
+		System.out.println(searchedReview.getComments());
 		
-		for (String idString : reviewIdStrings) {
-			Review review = reviewDao.getReviewById(Long.parseLong(idString));
-			System.out.format("\tReading review with id '%s': id: %d, date: %s, reviewer id: %d, comments: %s, listing id: %s\n",
-					idString, review.getId(), review.getDate().toString(), review.getGuest().getId(), review.getComments(), review.getListing().getID());
-		}
 		
-		// Get Reviews by ReviewerId
-		System.out.println("********** get reviews by reviewerId ************");
-		Integer chosenReviewerId = 1;
-		List<Review> reviewsWithReviewerId = reviewDao.getReviewsByReviewerId(chosenReviewerId);
 		
-		for (Review review : reviewsWithReviewerId) {
-			System.out.format("\tReading review with reviewerId '%d': id: %d, date: %s, reviewer id: %d, comments: %s, listing id: %s\n",
-					chosenReviewerId, review.getId(), review.getDate().toString(), review.getGuest().getId(), review.getComments(), review.getListing().getID());
-		}
-		
+//		
+//		// Get Reviews by ReviewerId
+//		System.out.println("********** get reviews by reviewerId ************");
+//		Integer chosenReviewerId = 1;
+//		List<Review> reviewsWithReviewerId = reviewDao.getReviewsByReviewerId(chosenReviewerId);
+//		
+//		for (Review review : reviewsWithReviewerId) {
+//			System.out.format("\tReading review with reviewerId '%d': id: %d, date: %s, reviewer id: %d, comments: %s, listing id: %s\n",
+//					chosenReviewerId, review.getId(), review.getDate().toString(), review.getGuest().getId(), review.getComments(), review.getListing().getID());
+//		}
+//		
 		// Get Reviews by ListingId
 		System.out.println("********** get reviews by listingId ************");
-		Integer chosenListingId = 30;
-		List<Review> reviewsWithListingId = reviewDao.getReviewsByReviewerId(chosenListingId);
+		Integer chosenListingId = 2318;
+		List<Review> reviewsWithListingId = reviewDao.getReviewsByListingId(chosenListingId);
 		
 		for (Review review : reviewsWithListingId) {
 			System.out.format("\tReading review with listingId '%d': id: %d, date: %s, reviewer id: %d, comments: %s, listing id: %s\n",
 					chosenListingId, review.getId(), review.getDate().toString(), review.getGuest().getId(), review.getComments(), review.getListing().getID());
 		}
-		
+//		
 		// Delete Reviews
 		System.out.println("********** get review by listingId ************");
-		for (String idString : reviewIdStrings) {
-			Review review = reviewDao.getReviewById(Long.parseLong(idString));
-			reviewDao.delete(review);
-			System.out.format("\tDeleting review with id %d.\n", idString);
-		}
+		Review deletedReview = reviewDao.delete(reviewNoId);
+		System.out.println(deletedReview);
+		
+//		for (String idString : reviewIdStrings) {
+//			Review review = reviewDao.getReviewById(Long.parseLong(idString));
+//			reviewDao.delete(review);
+//			System.out.format("\tDeleting review with id %d.\n", idString);
+//		}
   }
 }

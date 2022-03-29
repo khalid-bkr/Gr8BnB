@@ -144,7 +144,7 @@
 	                    <td><c:out value="${listing.getName()}" /></td>
 	                    <td><c:out value="${listing.getDescription()}" /></td>
 	                    <td><a class="btn btn-main" href="findhost?username=<c:out value="${listing.getHost().getUserName()}"/>">Host</a></td>
-	                    <td><a class="btn btn-main" href="=<c:out value=""/>">Reviews</a></td>
+	                    <td><a class="btn btn-main" href="listingreviews?listingid=<c:out value="${listing.getID()}"/>">Reviews</a></td>
 	                    <td><a class="btn btn-main" href="=<c:out value=""/>">Rating</a></td>
 	                    <td><a class="btn btn-main" href="=<c:out value=""/>">Delete</a></td>
 	                    <td><a class="btn btn-main" href="=<c:out value=""/>">Update</a></td>
