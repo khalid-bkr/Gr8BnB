@@ -56,8 +56,9 @@
                     <td><c:out value="${listingRating.getScore()}" /></td>
 
                     <td>
-                        <a class="btn btn-main" href="=<c:out value=""/>">Update</a>
+                     <a class="btn btn-main" href="updatelistingrating?ratingid=<c:out value="${listingRating.getId()}"/>">Update</a>
                     </td>
+                    
                 </tr>
                 </c:forEach>
             </tbody>
