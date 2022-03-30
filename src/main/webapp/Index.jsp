@@ -72,7 +72,63 @@
 	
 	a {
 		text-decoration: none;
+		color: black;
 	}
+	
+	
+	.card-trip {
+	  overflow: hidden;
+	  background: white;
+	  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+	  border-radius: 5px;
+	}
+	
+	.card-trip > img {
+	  height: 200px;
+	  width: 100%;
+	  object-fit: cover;
+	}
+	
+	.card-trip h2 {
+	  font-size: 16px;
+	  font-weight: bold;
+	  margin: 0;
+	  color: black;
+	}
+	
+	.card-trip p {
+	  font-size: 12px;
+	  opacity: .7;
+	  margin: 0;
+	  color: black;
+	}
+	
+	
+	.card-trip .card-trip-infos {
+	  padding: 16px;
+	  display: flex;
+	  justify-content: space-between;
+	  align-items: flex-end;
+	  position: relative;
+	}
+	
+	.card-trip-infos .card-trip-user {
+	  position: absolute;
+	  right: 16px;
+	  top: -20px;
+	  width: 40px;
+	}
+	
+	
+	.cards {
+	  display: grid;
+	  grid-template-columns: 1fr 1fr 1fr;
+	  grid-gap: 16px;
+	  margin-top: 1em;
+	}
+	
+	
+	
 	
 
 
@@ -121,7 +177,43 @@
 		</div>
 	</form>
 	
-		<br/>
+	<br/>
+	<div class="container">
+		<h1 class="d-flex justify-content-center">Matching Listings</h1>
+		<div class="cards">
+			<c:forEach items="${listings}" var="listing" >
+				<div class="card-trip">
+				  <img src="<c:out value="${listing.getPictureUrl()}" />" />
+				  <div class="card-trip-infos">
+				    <div>
+				      <h2> <a href="findlisting?listingid=<c:out value="${listing.getName()}" />"> <c:out value="${listing.getName()}" /></a></h2>
+				      <p>Hosted By: <a href="findhost?username=<c:out value="${listing.getHost().getUserName()}"/>"><c:out value="${listing.getHost().getUserName()}"/></a></p>
+	
+				    </div>
+				    <h2 class="card-trip-pricing">$<c:out value="${listing.getPrice()}" /></h2>
+				  </div>
+				</div>
+			</c:forEach>
+		</div>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+<%-- 		<br/>
 	<div class="container">
 		<h1 class="d-flex justify-content-center">Matching Listings</h1>
         <table class="table table-striped rounded table-style">
@@ -154,7 +246,7 @@
 
        </table>
 	
-	</div>	
+	</div>	 --%>
 
 <!-- JavaScript Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
