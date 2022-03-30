@@ -32,6 +32,10 @@ public class Host extends User {
 		this.hostListingCount = hostListingCount;
 		this.hostTotalListingCount = hostTotalListingCount;
 	}
+	
+	public Host(int id) {
+		super(id);
+	}
 
 	public String getHostUrl() {
 		return hostUrl;
