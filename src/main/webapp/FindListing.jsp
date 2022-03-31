@@ -98,66 +98,113 @@
 	<div class="container">
 		<h1 class="d-flex justify-content-center">Matching Listing</h1>
         <table class="table table-striped rounded table-style">
-        <thead class="thead-dark">
-            <tr>
-                <th>ID</th>
-                <th>URL</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Neighborhood Overview</th>
-                <th>Picture URL</th>
-                <th>Host</th>
-                <th>Neighborhood</th>
-                <th>Accommodates</th>
-                <th>Bathrooms</th>
-                <th>Bedrooms</th>
-                <th>Price</th>
-                <th>Availability</th>
-                <th>Reviews</th>
-                <th>First Review</th>
-                <th>Last Review</th>
-                <th>License</th>
-                <th>Instantly Bookable</th>
-                <th>Latitude</th>
-                <th>Longitude</th>
-                <th>Room Type</th>
-                <th>Property Type</th>
-                <th>Update</th>
-                <th>Delete</th>
-            </tr>
-            </thead>
             <tbody>
-                <tr>
                 <c:if test="${not empty listing }">
-                    <td><c:out value="${listing.getID()}" /></td>
+                	<tr>
+                		<th>ID</th>
+                    	<td><c:out value="${listing.getID()}" /></td>
+                	</tr>
                     <%-- <td><a class="btn btn-main" href=""=<c:out value="${listing.getListingURL()}"/>">Link</a></td> --%>
-                    <td><c:out value="${listing.getListingURL()}" /></td>
-                    <td><c:out value="${listing.getName()}" /></td>
-                    <td><c:out value="${listing.getDescription()}" /></td>
-                    <td><c:out value="${listing.getNeighborhoodOverview()}" /></td>
-                    <%-- <td><a class="btn btn-main" href=""=<c:out value="${listing.getPictureUrl()}"/>">Link</a></td> --%>
-                    <td><c:out value="${listing.getPictureUrl()}" /></td>
-                    <td><a class="btn btn-main" href="findhost?username=<c:out value="${listing.getHost().getUserName()}"/>">Host</a></td>
-                    <td><c:out value="${listing.getNeighborhood().getNeighborhood()}" /></td>
-                    <td><c:out value="${listing.getAccommodates()}" /></td>
-                    <td><c:out value="${listing.getBathroomsText()}" /></td>
-                    <td><c:out value="${listing.getBedrooms()}" /></td>
-                    <td><c:out value="$${Integer.valueOf(listing.getPrice())}/night" /></td>
-                    <td><c:out value="${listing.isHasAvailability()}" /></td>
-                    <td><c:out value="${listing.getNumberOfReviews()}" /></td>
-                    <td><c:out value="${listing.getFirstReview()}" /></td>
-                    <td><c:out value="${listing.getLastReview()}" /></td>
-                    <td><c:out value="${listing.getLicense()}" /></td>
-                    <td><c:out value="${listing.isInstantBookable()}" /></td>
-                    <td><c:out value="${listing.getLatitude()}" /></td>
-                    <td><c:out value="${listing.getLongitude()}" /></td>
-                    <td><c:out value="${listing.getRoomType().toString()}" /></td>
-                    <td><c:out value="${listing.getPropertyType()}" /></td>
+                    <tr>
+		                <th>URL</th>
+                    	<td><c:out value="${listing.getListingURL()}" /></td>
 
-                    <td><a class="btn btn-main" href="listingupdate?listingId=<c:out value="${listing.getID()}"/>">Update</a></td>
-                    <td><a class="btn btn-main" href="listingdelete?listingId=<c:out value="${listing.getID()}"/>">Delete</a></td>
+                	</tr>
+                	<tr>
+		                <th>Title</th>
+	                    <td><c:out value="${listing.getName()}" /></td>
+                	</tr>
+                	<tr>
+		                <th>Description</th>
+	                    <td><c:out value="${listing.getDescription()}" /></td>
+                	</tr>
+                	<tr>
+		                <th>Neighborhood Overview</th>
+	                    <td><c:out value="${listing.getNeighborhoodOverview()}" /></td>
+                	</tr>
+                    <%-- <td><a class="btn btn-main" href=""=<c:out value="${listing.getPictureUrl()}"/>">Link</a></td> --%>
+                    <tr>
+		                <th>Picture URL</th>
+	                    <td><c:out value="${listing.getPictureUrl()}" /></td>
+                    </tr>
+                    <tr>
+		                <th>Host</th>
+	                    <td><a class="btn btn-main" href="findhost?username=<c:out value="${listing.getHost().getUserName()}"/>">Host</a></td>
+                    </tr>
+                    
+                    <tr>
+		                <th>Neighborhood</th>
+	                    <td><c:out value="${listing.getNeighborhood().getNeighborhood()}" /></td>
+                    </tr>
+                    <tr>
+		                <th>Accommodates</th>
+	                    <td><c:out value="${listing.getAccommodates()}" /></td>
+                    </tr>
+                    <tr>
+		                <th>Bathrooms</th>
+	                    <td><c:out value="${listing.getBathroomsText()}" /></td>
+                    </tr>
+                    <tr>
+		                <th>Bedrooms</th>
+	                    <td><c:out value="${listing.getBedrooms()}" /></td>
+                    </tr>
+                    <tr>
+		                <th>Price</th>
+	                    <td><c:out value="$${listing.getPrice()}0" /></td>
+                    </tr>
+                   	<tr>
+		                <th>Availability</th>
+	                    <td><c:out value="${listing.isHasAvailability()}" /></td>
+                    </tr>
+                    <tr>
+		                <th>Reviews</th>
+	                    <td><c:out value="${listing.getNumberOfReviews()}" /></td>
+                    </tr>
+                    <tr>
+		                <th>First Review</th>
+	                    <td><c:out value="${listing.getFirstReview()}" /></td>
+                    </tr>
+                	<tr>
+		                <th>Last Review</th>
+	                    <td><c:out value="${listing.getLastReview()}" /></td>
+                	</tr>
+                	<tr>
+		                <th>License</th>
+	                    <td><c:out value="${listing.getLicense()}" /></td>
+                	</tr>
+                	
+                	<tr>
+		                <th>Instantly Bookable</th>
+	                    <td><c:out value="${listing.isInstantBookable()}" /></td>
+                	</tr>
+                	<tr>
+		                <th>Latitude</th>
+	                    <td><c:out value="${listing.getLatitude()}" /></td>
+                	</tr>
+                	<tr>
+		                <th>Longitude</th>
+	                    <td><c:out value="${listing.getLongitude()}" /></td>
+                	</tr>
+                	<tr>
+		                <th>Room Type</th>
+	                    <td><c:out value="${listing.getRoomType().toString()}" /></td>
+                	</tr>
+                	<tr>
+		                <th>Property Type</th>
+	                    <td><c:out value="${listing.getPropertyType()}" /></td>
+                	</tr>
+                	<tr>
+		                <th>Update</th>
+	                    <td><a class="btn btn-main" href="listingupdate?listingId=<c:out value="${listing.getID()}"/>">Update</a></td>
+                	</tr>  
+                	<tr>
+		                <th>Delete</th>
+	                    <td><a class="btn btn-main" href="listingdelete?listingId=<c:out value="${listing.getID()}"/>">Delete</a></td>
+                	</tr>
+  
+                    
+
                 </c:if>
-                </tr>
             </tbody>
 
        </table>
