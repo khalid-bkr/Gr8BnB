@@ -109,7 +109,7 @@
    	<form action="findhostrating" method="post" class="container">
 		<h1 class="header d-flex justify-content-center">Search for Host Rating by Host ID</h1>
 		<p class="d-flex justify-content-center">
-			<input id="id" name="id" placeholder="Host ID" class="search-box" value="${fn:escapeXml(param.username)}">
+			<input id="hostid" name="hostid" placeholder="Host ID" class="search-box" value="${fn:escapeXml(param.username)}">
 		</p>
 		<div class="d-flex flex-column" >
 			<div class="d-flex justify-content-center">
@@ -126,20 +126,23 @@
         <table class="table table-striped rounded table-style">
         <thead class="thead-dark">
             <tr>
+                <th>Host Rating ID</th>
                 <th>Host ID</th>
                 <th>Ratings</th>
                 <th>Delete Host Rating</th>
             </tr>
             </thead>
             <tbody>
+                <c:forEach items="${hostRatings}" var="hostRating" >
                 <tr>
-                <c:if test="${not empty hostRating }">
                     <td><c:out value="${hostRating.getId()}" /></td>
-                    <td><c:out value="${hostRating.getRating}" /></td>
-                    <td><a class="btn btn-main" href="=<c:out value=""/>">Ratings</a></td>
-                    <td><a class="btn btn-main" href="hostratingdelete?id=<c:out value="${hostRating.getId()}"/>">Delete</a></td>
-                </c:if>
+                    <td><c:out value="${hostRating.getHost().getId()}" /></td>
+                    <td><c:out value="${hostRating.getRating()}"/></td>
+                    <td>
+                     <a class="btn btn-main" href="hostratingdelete?hostratingid=<c:out value="${hostRating.getId()}"/>">Delete</a>
+                    </td>
                 </tr>
+                </c:forEach>
             </tbody>
 
        </table>

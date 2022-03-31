@@ -48,4 +48,27 @@ public class FindHostRating extends HttpServlet {
         req.setAttribute("hostRatings", hostRatings);
         req.getRequestDispatcher("/FindHostRating.jsp").forward(req, resp);
 	}
+	
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		Map<String, String> messages = new HashMap<>();
+		req.setAttribute("messages", messages);
+		
+		List<HostRating> hostRatings = null;
+		String hostId = req.getParameter("hostid");
+		
+		if (hostId == null || hostId.trim().isEmpty()) {
+			messages.put("success", "Please enter a valid host id.");
+		} else {
+			try {
+				hostRatings = hostRatingDao.getHostRatingByHostId(Integer.parseInt(hostId));
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw new IOException(e);
+			}
+			messages.put("success", "Displaying results for Host: " + hostId);
+		}
+		req.setAttribute("hostRatings", hostRatings);
+		req.getRequestDispatcher("FindHostRating.jsp").forward(req, resp);
+	}
 }
