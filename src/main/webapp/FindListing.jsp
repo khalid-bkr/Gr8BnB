@@ -142,7 +142,7 @@
                     <td><c:out value="${listing.getAccommodates()}" /></td>
                     <td><c:out value="${listing.getBathroomsText()}" /></td>
                     <td><c:out value="${listing.getBedrooms()}" /></td>
-                    <td><c:out value="$${listing.getPrice()}0" /></td>
+                    <td><c:out value="$${Integer.valueOf(listing.getPrice())}/night" /></td>
                     <td><c:out value="${listing.isHasAvailability()}" /></td>
                     <td><c:out value="${listing.getNumberOfReviews()}" /></td>
                     <td><c:out value="${listing.getFirstReview()}" /></td>

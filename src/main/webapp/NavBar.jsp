@@ -19,6 +19,9 @@
               <li class="nav-item">
                 <a class="nav-link" href="findhost">Find Host</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" href="findlisting">Find Listing</a>
+              </li>
             </ul>
           </div>
     </div>
