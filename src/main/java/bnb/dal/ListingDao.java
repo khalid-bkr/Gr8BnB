@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -60,8 +61,19 @@ public class ListingDao {
           insertStmt.setDouble(12, listing.getPrice());
           insertStmt.setBoolean(13, listing.isHasAvailability());
           insertStmt.setInt(14, listing.getNumberOfReviews());
-          insertStmt.setTimestamp(15, new Timestamp(listing.getFirstReview().getTime()));
-          insertStmt.setTimestamp(16, new Timestamp(listing.getLastReview().getTime()));
+          
+          if (listing.getFirstReview() == null) {
+        	  insertStmt.setNull(15, Types.TIMESTAMP);
+          } else {
+        	  insertStmt.setTimestamp(15, new Timestamp(listing.getFirstReview().getTime()));
+          }
+          
+          if (listing.getFirstReview() == null) {
+        	  insertStmt.setNull(16, Types.TIMESTAMP);
+          } else {
+        	  insertStmt.setTimestamp(16, new Timestamp(listing.getLastReview().getTime()));
+          }
+          
           insertStmt.setString(17, listing.getLicense());
           insertStmt.setBoolean(18, listing.isInstantBookable());
           insertStmt.setDouble(19, listing.getLatitude());
@@ -85,6 +97,87 @@ public class ListingDao {
       }
     }
   }
+
+  public Listing createWithoutIdAndListingUrl(Listing listing) throws SQLException {
+	    String insertListing= "INSERT INTO Listing(ListingUrl, Name, Description,"
+	        + " NeighborhoodOverview, PictureUrl, HostID, Neighborhood, Accommodates,"
+	        + " BathroomsText, Bedrooms, Price, HasAvailability, NumberOfReviews, FirstReview,"
+	        + " LastReview, License, InstantBookable, Latitude, Longitude, RoomType, PropertyType) "
+	        + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+
+	    Connection connection = null;
+	    PreparedStatement insertStmt = null;
+	    ResultSet resultKey = null;
+	    
+	    try {
+	          connection = connectionManager.getConnection();
+	          insertStmt = connection.prepareStatement(insertListing);
+	          HostDao hostDao = HostDao.getInstance();
+
+	          if (listing.getListingURL() == null) {
+	        	  insertStmt.setNull(1, Types.VARCHAR);
+	          } else {
+	        	  insertStmt.setString(1, listing.getListingURL());
+	          }
+	          insertStmt.setString(2, listing.getName());
+	          insertStmt.setString(3, listing.getDescription());
+	          insertStmt.setString(4, listing.getNeighborhoodOverview());
+	          insertStmt.setString(5, listing.getPictureUrl());
+	          insertStmt.setInt(6, listing.getHost().getId());
+	          insertStmt.setString(7, listing.getNeighborhood().getNeighborhood());
+	          insertStmt.setInt(8, listing.getAccommodates());
+	          insertStmt.setString(9, listing.getBathroomsText());
+	          insertStmt.setInt(10, listing.getBedrooms());
+	          insertStmt.setDouble(11, listing.getPrice());
+	          insertStmt.setBoolean(12, listing.isHasAvailability());
+	          insertStmt.setInt(13, listing.getNumberOfReviews());
+	          
+	          
+	          if (listing.getFirstReview() == null) {
+	        	  insertStmt.setNull(14, Types.TIMESTAMP);
+	          } else {
+	        	  insertStmt.setTimestamp(14, new Timestamp(listing.getFirstReview().getTime()));
+	          }
+	          
+	          if (listing.getFirstReview() == null) {
+	        	  insertStmt.setNull(15, Types.TIMESTAMP);
+	          } else {
+	        	  insertStmt.setTimestamp(15, new Timestamp(listing.getLastReview().getTime()));
+	          }
+	          insertStmt.setTimestamp(16, new Timestamp(listing.getFirstReview().getTime()));
+	          insertStmt.setTimestamp(17, new Timestamp(listing.getLastReview().getTime()));
+	          insertStmt.setString(18, listing.getLicense());
+	          insertStmt.setBoolean(19, listing.isInstantBookable());
+	          insertStmt.setDouble(20, listing.getLatitude());
+	          insertStmt.setDouble(21, listing.getLongitude());
+	          insertStmt.setString(22, listing.getRoomType().getRoom());
+	          insertStmt.setString(23, listing.getPropertyType());
+
+	          insertStmt.executeUpdate();
+	          
+	          resultKey = insertStmt.getGeneratedKeys();
+			  Integer listingId = -1;
+			  if (resultKey.next()) {
+				  listingId = resultKey.getInt(1);
+			  } else {
+			    throw new SQLException("Unable to retrieve auto-generated key.");
+			  }
+			  listing.setID(listingId);
+	          
+	          hostDao.incrementHostListingCount(listing.getHost());
+	          return listing;
+	    } catch (SQLException e) {
+	      e.printStackTrace();
+	      throw e;
+	    } finally {
+	      if (connection != null) {
+	        connection.close();
+	      }
+	      if (insertStmt != null) {
+	        insertStmt.close();
+	      }
+	    }
+	  }
 
 
   public Listing getListingById (int id) throws SQLException {
@@ -367,8 +460,9 @@ public class ListingDao {
     try {
       connection = connectionManager.getConnection();
       selectStmt = connection.prepareStatement(updateListingPrice);
-      selectStmt.setInt(1, listing.getID());
-      selectStmt.setDouble(2, newPrice);
+      selectStmt.setDouble(1, newPrice);
+      selectStmt.setInt(2, listing.getID());
+
 
       selectStmt.executeUpdate();
       return listing;
@@ -396,8 +490,8 @@ public class ListingDao {
     try {
       connection = connectionManager.getConnection();
       selectStmt = connection.prepareStatement(updateListing);
-      selectStmt.setInt(1, listing.getID());
-      selectStmt.setBoolean(2, newAvailability);
+      selectStmt.setBoolean(1, newAvailability);
+      selectStmt.setInt(2, listing.getID());
 
       selectStmt.executeUpdate();
       return listing;
@@ -427,9 +521,12 @@ public class ListingDao {
       HostDao hostDao = HostDao.getInstance();
       
       deleteStmt.setInt(1, listing.getID());
-      deleteStmt.executeUpdate();
       
-      hostDao.decrementHostListingCount(listing.getHost());
+      if (listing.getHost() != null) {
+    	  hostDao.decrementHostListingCount(listing.getHost());
+      }
+      
+      deleteStmt.executeUpdate();
       return null;
     } catch (SQLException e) {
       e.printStackTrace();
