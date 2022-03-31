@@ -51,65 +51,62 @@ public class ListingCreate extends HttpServlet {
         // Map for storing messages.
         Map<String, String> messages = new HashMap<String, String>();
         req.setAttribute("messages", messages);
-
-        // Retrieve and validate name.
-        String listingId = req.getParameter("listingId");
-        if (listingId == null || listingId.trim().isEmpty()) {
-            messages.put("success", "Invalid Listing Id");
-        } else {
+        
+        HostDao hostDao = HostDao.getInstance();
         	
-        	int id = Integer.parseInt(req.getParameter("id"));
-        	String listingURL = req.getParameter("listingurl");
-        	String name = req.getParameter("name");
-        	String description = req.getParameter("description");
-        	String neighborhoodOverview = req.getParameter("neighborhoodoverview");
-        	String pictureUrl = req.getParameter("pictureurl");
-        	Host host = new Host(Integer.valueOf(req.getParameter("hostid")));
-        	Neighborhood neighborhood = new Neighborhood(req.getParameter("neighborhoodname"));
-        	int accommodates = Integer.parseInt(req.getParameter("accommodates"));
-        	String bathroomsText = req.getParameter("bathroomstext");
-        	int bedrooms = Integer.parseInt(req.getParameter("bedrooms"));
-        	double price = Double.parseDouble(req.getParameter("price"));
-        	Boolean hasAvailability = Boolean.parseBoolean(req.getParameter("hasavailability"));
-        	int numberOfReviews = Integer.parseInt(req.getParameter("numberofreviews"));
-        	
-        	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        	String firstReviewString = req.getParameter("firstreview");
-        	Date firstReview = new Date();
-        	try {
-        		firstReview = dateFormat.parse(firstReviewString);
-        	} catch (ParseException e) {
-        		e.printStackTrace();
-        		throw new IOException(e);
-        	}
-        	
-        	String lastReviewString = req.getParameter("lastreview");
-        	Date lastReview = new Date();
-        	try {
-        		lastReview = dateFormat.parse(lastReviewString);
-        	} catch (ParseException e) {
-        		e.printStackTrace();
-        		throw new IOException(e);
-        	}
-        	
-        	String license = req.getParameter("license");
-        	Boolean instantBookable = Boolean.parseBoolean(req.getParameter("instantbookable"));
-        	double latitude = Double.parseDouble(req.getParameter("latitude"));
-        	double longitude = Double.parseDouble(req.getParameter("longitude"));
-        	RoomType roomType = RoomType.valueOf(req.getParameter("roomtype"));
-        	String propertyType = req.getParameter("propertyType");
-        	
-	        try {
-	        	Listing listing = new Listing(id, listingURL, name, description, neighborhoodOverview,
-	                    pictureUrl, host, neighborhood, accommodates,  bathroomsText, bedrooms, price, hasAvailability,
-	                 numberOfReviews,  firstReview,  lastReview, license, instantBookable, latitude, longitude,
-	                    roomType, propertyType);
-	        	listing = listingDao.create(listing);
-	        	messages.put("success", String.format("Successfully created listing '%s' with id %d", name, id));
-	        } catch (SQLException e) {
-				e.printStackTrace();
-				throw new IOException(e);
-	        }
+    	String name = req.getParameter("name");
+    	String description = req.getParameter("description");
+    	String neighborhoodOverview = req.getParameter("neighborhoodoverview");
+    	String pictureUrl = req.getParameter("pictureurl");
+    	
+    	Integer hostId = Integer.valueOf(req.getParameter("hostid"));
+    	Host host = null;
+		try {
+			host = hostDao.getHostById(hostId);
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+			throw new IOException(e1);
+		}
+		
+		if (host == null) {
+			messages.put("success", "Host ID entered is not a valid host ID.");
+		}
+    	
+    	Neighborhood neighborhood = new Neighborhood(req.getParameter("neighborhoodname"));
+    	int accommodates = Integer.parseInt(req.getParameter("accommodates"));
+    	String bathroomsText = req.getParameter("bathroomstext");
+    	int bedrooms = Integer.parseInt(req.getParameter("bedrooms"));
+    	double price = Double.parseDouble(req.getParameter("price"));
+    	Boolean hasAvailability = Boolean.parseBoolean(req.getParameter("hasavailability").toLowerCase());
+    	
+    	String license = req.getParameter("license");
+    	Boolean instantBookable = Boolean.parseBoolean(req.getParameter("instantbookable").toLowerCase());
+    	double latitude = Double.parseDouble(req.getParameter("latitude"));
+    	double longitude = Double.parseDouble(req.getParameter("longitude"));
+    	
+    	RoomType roomType = null;
+    	String roomTypeString = req.getParameter("roomtype");
+    	
+    	for (RoomType type : RoomType.values()) {
+            if (type.getRoom().equals(roomTypeString)) {
+            	roomType = type;
+            }
+        }
+    	if (roomType == null) {
+    		messages.put("success", "Invalid room type.");
+    	}
+    	String propertyType = req.getParameter("propertyType");
+    	
+        try {
+        	Listing listing = new Listing(null, name, description, neighborhoodOverview,
+                    pictureUrl, host, neighborhood, accommodates,  bathroomsText, bedrooms, price, hasAvailability,
+                 0,  null,  null, license, instantBookable, latitude, longitude,
+                    roomType, propertyType);
+        	listing = listingDao.create(listing);
+        	messages.put("success", String.format("Successfully created listing '%s'", name));
+        } catch (SQLException e) {
+			e.printStackTrace();
+			throw new IOException(e);
         }
         
         req.getRequestDispatcher("/ListingCreate.jsp").forward(req, resp);

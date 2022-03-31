@@ -3,14 +3,9 @@ package bnb.servlet;
 
 import bnb.dal.*;
 import bnb.model.*;
-import bnb.model.Listing.RoomType;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  * To use locally, start the server and navigate to http://localhost:8080/Gr8BnBApplication/listingdelete?listingid=0
  */
 @WebServlet("/listingdelete")
-public class ListingUpdate extends HttpServlet {
+public class ListingDelete extends HttpServlet {
 	
 	protected ListingDao listingDao;
 	
