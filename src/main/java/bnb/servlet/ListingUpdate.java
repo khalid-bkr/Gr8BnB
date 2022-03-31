@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * ListingUpdate allows you to update a listing's price.
  * 
- * To use locally, start the server and navigate to http://localhost:8080/Gr8BnBApplication/listingupdate?listingid=0&price=0
+ * To use locally, start the server and navigate to http://localhost:8080/Gr8BnBApplication/listingupdate?listingId=0&price=0
  */
 @WebServlet("/listingupdate")
 public class ListingUpdate extends HttpServlet {
@@ -43,7 +43,7 @@ public class ListingUpdate extends HttpServlet {
         req.setAttribute("messages", messages);
         
         // Retrieve Listing and validate.
-        String listingId = req.getParameter("listingid");
+        String listingId = req.getParameter("listingId");
         if (listingId == null || listingId.trim().isEmpty()) {
             messages.put("success", "Please enter a valid listing id");
         } else {

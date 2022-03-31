@@ -53,7 +53,9 @@ public class ListingCreate extends HttpServlet {
         req.setAttribute("messages", messages);
         
         HostDao hostDao = HostDao.getInstance();
+        NeighborhoodDao neighborhoodDao = NeighborhoodDao.getInstance();
         	
+        String listingUrl = req.getParameter("listingurl");
     	String name = req.getParameter("name");
     	String description = req.getParameter("description");
     	String neighborhoodOverview = req.getParameter("neighborhoodoverview");
@@ -72,7 +74,7 @@ public class ListingCreate extends HttpServlet {
 			messages.put("success", "Host ID entered is not a valid host ID.");
 		}
     	
-    	Neighborhood neighborhood = new Neighborhood(req.getParameter("neighborhoodname"));
+		Neighborhood neighborhood = new Neighborhood(req.getParameter("neighborhoodname"));
     	int accommodates = Integer.parseInt(req.getParameter("accommodates"));
     	String bathroomsText = req.getParameter("bathroomstext");
     	int bedrooms = Integer.parseInt(req.getParameter("bedrooms"));
@@ -98,7 +100,7 @@ public class ListingCreate extends HttpServlet {
     	String propertyType = req.getParameter("propertyType");
     	
         try {
-        	Listing listing = new Listing(null, name, description, neighborhoodOverview,
+        	Listing listing = new Listing(listingUrl, name, description, neighborhoodOverview,
                     pictureUrl, host, neighborhood, accommodates,  bathroomsText, bedrooms, price, hasAvailability,
                  0,  null,  null, license, instantBookable, latitude, longitude,
                     roomType, propertyType);

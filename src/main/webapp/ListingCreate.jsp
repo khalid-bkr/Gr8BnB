@@ -173,6 +173,17 @@
               <form action="listingcreate" method="post">
                 <div class="row">
                   <div class="col-12 col-md-12">
+                  	<div class="form-group">
+                      <h3 class="listing-field-header">Listing URL</h3>
+                      <input
+                        id="listingurl"
+                        type="text"
+                        name="listingurl"
+                        class="form-control"
+                        placeholder="Example: https://www.airbnb.com/rooms/1234"
+                        value=""
+                      />
+                    </div>
                     <div class="form-group">
                       <h3 class="listing-field-header">Title</h3>
                       <input

@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * FindListing allows you to get a listing by listing id.
  * 
- * To use locally, start the server and navigate to http://localhost:8080/Gr8BnBApplication/findlisting?listingid=0
+ * To use locally, start the server and navigate to http://localhost:8080/Gr8BnBApplication/findlisting?listingId=0
  */
 @WebServlet("/findlisting")
 public class FindListing extends HttpServlet {
@@ -40,9 +40,9 @@ public class FindListing extends HttpServlet {
         
         Listing listing = null;
         
-        // Retrieve and validate lsiting id.
+        // Retrieve and validate listing id.
         // listing id is retrieved from the URL query string.
-        String listingId = req.getParameter("listingid");
+        String listingId = req.getParameter("listingId");
         if (listingId == null || listingId.trim().isEmpty()) {
             messages.put("success", "Please enter a valid listing id.");
         } else {
@@ -53,7 +53,7 @@ public class FindListing extends HttpServlet {
     			e.printStackTrace();
     			throw new IOException(e);
             }
-        	messages.put("success", "Displaying results for listing with id: " + listingId);
+        	messages.put("success", "Displaying results for listing with ID: " + listingId);
         	// Save the previous search term, so it can be used as the default
         	// in the input box when rendering FindUsers.jsp.
         	messages.put("previousListingId", listingId);
@@ -86,7 +86,7 @@ public class FindListing extends HttpServlet {
     			e.printStackTrace();
     			throw new IOException(e);
             }
-        	messages.put("success", "Displaying results for listing with id: " + listingId);
+        	messages.put("success", "Displaying results for listing with ID: " + listingId);
         }
         req.setAttribute("listing", listing);
         
