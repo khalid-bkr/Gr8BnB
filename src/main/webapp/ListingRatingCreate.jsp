@@ -14,33 +14,79 @@
     <link rel="stylesheet" href="css/main.css"/>
 </head>
 <body>
-
-	<h1>Create Listing Rating</h1>
-	<form action="listingratingcreate" method="post">
-		<p>
-			<label for="listingid">ListingId</label>
-			<input id="listingid" name="listingid" value="">
-		</p>
-		<p>
-			<label for="hostid">HostId</label>
-			<input id="hostid" name="hostid" value="">
-		</p>
-		<p>
-			<label for="scoretype">Score type</label>
-			<input id="scoretype" name="scoretype" value="">
-		</p>
-		<p>
-			<label for="score">Score</label>
-			<input id="score" name="score" value="">
-		</p>
-		<p>
-			<input type="submit">
-		</p>
-	</form>
-	<br/><br/>
-	<p>
-		<span id="successMessage"><b>${messages.success}</b></span>
-	</p>
+<jsp:include page="NavBar.jsp"></jsp:include>
+	
+	  <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <h2 class="d-flex justify-content-center">Create Listing Rating</h2>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div class="contact-form">
+              <form action="listingratingcreate" method="post">
+                <div class="row">
+                  <div class="col-12 col-md-12">
+                    <div class="form-group">
+                      <input
+                        id="listingid"
+                        type="text"
+                        name="listingid"
+                        class="form-control"
+                        placeholder="Listing ID"
+                        value=""
+                      />
+                    </div>
+                    <div class="form-group">
+                      <input
+                        id="hostid"
+                        type="text"
+                        name="hostid"
+                        class="form-control"
+                        placeholder="Host ID"
+                        value=""
+                      />
+                    </div>
+                    <div class="form-group">
+                      <input
+                        id="scoretype"
+                        type="text"
+                        name="scoretype"
+                        class="form-control"
+                        placeholder="Score Type"
+                        value=""
+                      />
+                    </div>
+                    <div class="form-group">
+                      <input
+                        id="score"
+                        type="text"
+                        name="score"
+                        class="form-control"
+                        placeholder="Score"
+                        value=""
+                      />
+                    </div>
+                    <div class="form-group">
+	                      <div class="d-flex justify-content-start align-items-start"  >
+	                        <input
+	                          type="submit"
+	                          name="btnSubmit"
+	                          class="btn-main"
+	                          value="Create Listing Rating"
+	                        />
+	                </div>
+                   			<p id="status" class="d-flex justify-content-center"></p>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <span id="successMessage" class="d-flex justify-content-center"><b>${messages.success}</b></span>
+          </div>
+        </div>
+      </div>
 	
 </body>
 </html>

@@ -8,25 +8,26 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/main.css"/>
 <title>Delete a ListingRating</title>
 </head>
 <body>
+<jsp:include page="NavBar.jsp"></jsp:include>
 
-	<h1>${messages.title}</h1>
-	<form action="listingratingdelete" method="post">
-		<p>
-			<div <c:if test="${messages.disableSubmit}">style="display:none"</c:if>>
-				<label for="listingratingid">ListingRating Id</label>
-				<input id="listingratingid" name="listingratingid" value="${fn:escapeXml(param.listingratingid)}">
+	
+	<form  action="listingratingdelete" method="post" class="container">
+		<h1 class="header d-flex justify-content-center">${messages.title}</h1>
+		<p <c:if test="${messages.disableSubmit}">style="display: none !important"</c:if> class="d-flex justify-content-center">
+			<input id="listingratingid" name="listingratingid" placeholder="ListingRating ID" class="search-box" value="${fn:escapeXml(param.listingratingid)}">
+		</p>
+		<div <c:if test="${messages.disableSubmit}">style="display:none !important"</c:if> class="d-flex flex-column" >
+			<div class="d-flex justify-content-center">
+				<input type="submit"  value="Delete" class="btn btn-main">
 			</div>
-		</p>
-		<p>
-			<span id="submitButton" <c:if test="${messages.disableSubmit}">style="display:none"</c:if>>
-			<input type="submit">
-			</span>
-		</p>
+		</div>
 	</form>
-	<br/><br/>
 
 </body>
 </html>
