@@ -53,7 +53,7 @@
 				      <p>Hosted By: <a href="findhost?username=<c:out value="${listing.getHost().getUserName()}"/>"><c:out value="${listing.getHost().getUserName()}"/></a></p>
 	
 				    </div>
-				    <h2 class="card-trip-pricing">$<c:out value="${listing.getPrice()}" /></h2>
+				    <h2 class="card-trip-pricing">$<c:out value="${Integer.valueOf(listing.getPrice())}/night" /></h2>
 				  </div>
 				</div>
 			</c:forEach>

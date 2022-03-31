@@ -79,6 +79,8 @@
 </head>
 <body>
 <jsp:include page="NavBar.jsp"></jsp:include>
+
+
       
    	<form action="findhost" method="post" class="container">
 		<h1 class="header d-flex justify-content-center">Search for Host by UserName</h1>
