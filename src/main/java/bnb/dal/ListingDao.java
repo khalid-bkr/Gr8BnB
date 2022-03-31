@@ -460,8 +460,9 @@ public class ListingDao {
     try {
       connection = connectionManager.getConnection();
       selectStmt = connection.prepareStatement(updateListingPrice);
-      selectStmt.setInt(1, listing.getID());
-      selectStmt.setDouble(2, newPrice);
+      selectStmt.setDouble(1, newPrice);
+      selectStmt.setInt(2, listing.getID());
+
 
       selectStmt.executeUpdate();
       return listing;
@@ -489,8 +490,8 @@ public class ListingDao {
     try {
       connection = connectionManager.getConnection();
       selectStmt = connection.prepareStatement(updateListing);
-      selectStmt.setInt(1, listing.getID());
-      selectStmt.setBoolean(2, newAvailability);
+      selectStmt.setBoolean(1, newAvailability);
+      selectStmt.setInt(2, listing.getID());
 
       selectStmt.executeUpdate();
       return listing;

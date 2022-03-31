@@ -44,7 +44,7 @@ public class FindListing extends HttpServlet {
         // listing id is retrieved from the URL query string.
         String listingId = req.getParameter("listingId");
         if (listingId == null || listingId.trim().isEmpty()) {
-            messages.put("success", "Please enter a valid listing id.");
+            messages.put("success", "Please enter a valid listing ID.");
         } else {
         	// Retrieve BlogUsers, and store as a message.
         	try {
@@ -77,7 +77,7 @@ public class FindListing extends HttpServlet {
         // is populated by the URL query string (in FindListing.jsp).
         String listingId = req.getParameter("listingId");
         if (listingId == null || listingId.trim().isEmpty()) {
-            messages.put("success", "Please enter a valid listing id.");
+            messages.put("success", "Please enter a valid listing ID.");
         } else {
         	// Retrieve Listing, and store as a message.
         	try {

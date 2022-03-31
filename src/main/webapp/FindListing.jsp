@@ -78,33 +78,7 @@
 </style>
 </head>
 <body>
-      <!--Navbar -->
-      <nav
-        class="navbar navbar-expand-lg navbar-dark"
-        id="sideNav"
-      >
-        <div class="container d-flex justify-content-between">
-        	<div>
-        		<a class="" href="index"><p class="logo navbar-brand">GR8<strong>BnB</strong></p></a>
-        	</div>
-            
-
-          <div class="" id="">
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link" href="hostcreate">Become a Host</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="guestcreate">Sign up</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="">Find Host</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-      <!--/.Navbar -->
+      <jsp:include page="NavBar.jsp"></jsp:include>
       
    	<form action="findlisting" method="post" class="container">
 		<h1 class="header d-flex justify-content-center">Search for Listing by ID</h1>
@@ -156,10 +130,12 @@
                 <tr>
                 <c:if test="${not empty listing }">
                     <td><c:out value="${listing.getID()}" /></td>
+                    <%-- <td><a class="btn btn-main" href=""=<c:out value="${listing.getListingURL()}"/>">Link</a></td> --%>
                     <td><c:out value="${listing.getListingURL()}" /></td>
                     <td><c:out value="${listing.getName()}" /></td>
                     <td><c:out value="${listing.getDescription()}" /></td>
                     <td><c:out value="${listing.getNeighborhoodOverview()}" /></td>
+                    <%-- <td><a class="btn btn-main" href=""=<c:out value="${listing.getPictureUrl()}"/>">Link</a></td> --%>
                     <td><c:out value="${listing.getPictureUrl()}" /></td>
                     <td><a class="btn btn-main" href="findhost?username=<c:out value="${listing.getHost().getUserName()}"/>">Host</a></td>
                     <td><c:out value="${listing.getNeighborhood().getNeighborhood()}" /></td>
@@ -178,7 +154,7 @@
                     <td><c:out value="${listing.getRoomType().toString()}" /></td>
                     <td><c:out value="${listing.getPropertyType()}" /></td>
 
-                    <td><a class="btn btn-main" href="listingId=<c:out value=""/>">Update</a></td>
+                    <td><a class="btn btn-main" href="listingupdate?listingId=<c:out value="${listing.getID()}"/>">Update</a></td>
                     <td><a class="btn btn-main" href="listingdelete?listingId=<c:out value="${listing.getID()}"/>">Delete</a></td>
                 </c:if>
                 </tr>

@@ -45,12 +45,12 @@ public class ListingUpdate extends HttpServlet {
         // Retrieve Listing and validate.
         String listingId = req.getParameter("listingId");
         if (listingId == null || listingId.trim().isEmpty()) {
-            messages.put("success", "Please enter a valid listing id");
+            messages.put("success", "Please enter a valid listing ID.");
         } else {
         	try {
         		Listing listing = listingDao.getListingById(Integer.parseInt(listingId));
         		if (listing == null) {
-        			messages.put("success", String.format("Listing with id '%d' does not exist.", listingId));
+        			messages.put("success", String.format("Listing with ID '%d' does not exist.", listingId));
         		}
         		req.setAttribute("listing", listing);
         	} catch (SQLException e) {
@@ -69,39 +69,36 @@ public class ListingUpdate extends HttpServlet {
         Map<String, String> messages = new HashMap<String, String>();
         req.setAttribute("messages", messages);
 
-        // Retrieve and validate name.
+        // Retrieve user and validate.
         String listingId = req.getParameter("listingId");
         if (listingId == null || listingId.trim().isEmpty()) {
-            messages.put("success", "Please enter a valid listing id");
+            messages.put("success", "Please enter a valid listing ID.");
         } else {
-        	
         	try {
-        		Listing listing = listingDao.getListingById(Integer.parseInt(listingId));
-        		if (listing == null) {
-        			messages.put("success", String.format("Listing with id '%d' does not exist. No update to perform.", listingId));
+        		Listing listing = listingDao.getListingById(Integer.valueOf(listingId));
+        		if(listing == null) {
+        			messages.put("success", String.format("Listing with listing ID %s does not exist. No update to perform.", listingId));
         		} else {
-        			String priceString = req.getParameter("price");
-        			if (priceString == null || priceString.trim().isEmpty())  {
-        	            messages.put("success", "Please enter a valid listing id");
-        			} else {
-        				double newPrice = 0.0;
-        				try {
-        					newPrice = Double.parseDouble(priceString);
-        				} catch (NumberFormatException e) {
-        					e.printStackTrace();
-        					throw new IOException(e);
-        				}
-        				
-        				// Price given is a double
-        				double oldPrice = listing.getPrice();
-        				listing = listingDao.updateListingPrice(listing, newPrice);
-        				messages.put("success", String.format("Successfully changed listing price from $%.2f to $%.2f", oldPrice, newPrice));
-        			}
+        			String newPrice = req.getParameter("price");
+        			if (newPrice == null || newPrice.trim().isEmpty()) {
+        	            messages.put("success", "Please enter a valid price in the format '0.00'.");
+        	        } else {
+        	        	Double price;
+        	        	try {
+        	        	  price = Double.parseDouble(newPrice.trim());
+        	        	} catch(NumberFormatException e) {
+        	        		e.printStackTrace();
+        	        		throw new IOException(e);
+        	        	}
+        	        	Double oldPrice = listing.getPrice();
+        	        	listing = listingDao.updateListingPrice(listing, price);
+        	        	messages.put("success", String.format("Successfully changed listing price from $%.2f to $%.2f.", oldPrice, price));
+        	        }
         		}
         		req.setAttribute("listing", listing);
-	        } catch (SQLException e) {
-				e.printStackTrace();
-				throw new IOException(e);
+        	} catch (SQLException e1) {
+				e1.printStackTrace();
+				throw new IOException(e1);
 	        }
         }
         
