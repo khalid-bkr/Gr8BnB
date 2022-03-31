@@ -521,9 +521,12 @@ public class ListingDao {
       HostDao hostDao = HostDao.getInstance();
       
       deleteStmt.setInt(1, listing.getID());
-      deleteStmt.executeUpdate();
       
-      hostDao.decrementHostListingCount(listing.getHost());
+      if (listing.getHost() != null) {
+    	  hostDao.decrementHostListingCount(listing.getHost());
+      }
+      
+      deleteStmt.executeUpdate();
       return null;
     } catch (SQLException e) {
       e.printStackTrace();

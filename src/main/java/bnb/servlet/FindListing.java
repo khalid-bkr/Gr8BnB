@@ -53,10 +53,6 @@ public class FindListing extends HttpServlet {
     			e.printStackTrace();
     			throw new IOException(e);
             }
-        	messages.put("success", "Displaying results for listing with ID: " + listingId);
-        	// Save the previous search term, so it can be used as the default
-        	// in the input box when rendering FindUsers.jsp.
-        	messages.put("previousListingId", listingId);
         }
         req.setAttribute("listing", listing);
         
@@ -86,7 +82,12 @@ public class FindListing extends HttpServlet {
     			e.printStackTrace();
     			throw new IOException(e);
             }
-        	messages.put("success", "Displaying results for listing with ID: " + listingId);
+        	
+        	if (listing == null) {
+        		messages.put("success", "There is no listing associated with ID: " + listingId);
+        	} else {
+        		messages.put("success", "Displaying results for listing with ID: " + listingId);
+        	}
         }
         req.setAttribute("listing", listing);
         

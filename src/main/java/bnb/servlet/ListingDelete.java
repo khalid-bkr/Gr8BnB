@@ -37,7 +37,7 @@ public class ListingDelete extends HttpServlet {
         Map<String, String> messages = new HashMap<String, String>();
         req.setAttribute("messages", messages);
         messages.put("title", "Delete Listing");
-        req.getRequestDispatcher("/ListingUpdate.jsp").forward(req, resp);
+        req.getRequestDispatcher("/ListingDelete.jsp").forward(req, resp);
 	}
 	
 	@Override
@@ -50,7 +50,7 @@ public class ListingDelete extends HttpServlet {
         // Retrieve and validate listing id.
         String listingId = req.getParameter("listingId");
         if (listingId == null || listingId.trim().isEmpty()) {
-            messages.put("title", "Invalid listing id");
+            messages.put("title", "Invalid listing ID.");
             messages.put("disableSubmit", "true");
         } else {
         	Listing listing = new Listing(Integer.parseInt(listingId));
@@ -58,10 +58,10 @@ public class ListingDelete extends HttpServlet {
         		listing = listingDao.delete(listing);
         		// Update the message
         		if (listing == null) {
-        			messages.put("title", "Successfully deleted listing with id: " + listingId);
+        			messages.put("title", "Successfully deleted listing with ID: " + listingId);
                     messages.put("disableSubmit", "true");
         		} else {
-        			messages.put("title", "Failed to delete listing with id: " + listingId);
+        			messages.put("title", "Failed to delete listing with ID: " + listingId);
                     messages.put("disableSubmit", "false");
         		}
 	        } catch (SQLException e) {
