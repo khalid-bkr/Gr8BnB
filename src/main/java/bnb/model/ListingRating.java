@@ -25,6 +25,11 @@ public class ListingRating {
 		this.scoreType = scoreType;
 		this.score = score;
 	}
+	
+
+	public ListingRating(int id) {
+		this.id = id;
+	}
 
 	public int getId() {
 		return id;
