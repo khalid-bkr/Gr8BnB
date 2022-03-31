@@ -39,16 +39,13 @@ public class HostRatingDelete extends HttpServlet{
         Map<String, String> messages = new HashMap<String, String>();
         req.setAttribute("messages", messages);
         
-        String id = req.getParameter("id");
+        String id = req.getParameter("hostratingid");
         if (id == null || id.trim().isEmpty()) {
             messages.put("title", "Invalid ID");
             messages.put("disableSubmit", "true");
         } else {
         	int hostRatingId = Integer.parseInt(id);
-        	int hostId = Integer.parseInt(req.getParameter("hostid"));
-        	Host host = new Host(hostId);
-        	double rating = Double.parseDouble(req.getParameter("rating"));
-    		HostRating hostRating= new HostRating(hostRatingId, host, rating);
+    		HostRating hostRating= new HostRating(hostRatingId);
         	try {
         		hostRating = hostRatingDao.delete(hostRating);
         		if (hostRating == null) {

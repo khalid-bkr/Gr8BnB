@@ -15,6 +15,10 @@ public class HostRating {
     this.host = host;
     this.rating = rating;
   }
+  
+  public HostRating(int id) {
+	  this.id = id;
+  }
 
   public int getId() {
     return id;

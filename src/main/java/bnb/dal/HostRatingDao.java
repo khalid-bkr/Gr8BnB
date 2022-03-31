@@ -180,13 +180,14 @@ public class HostRatingDao {
   }
 
   public HostRating delete(HostRating hostRating) throws SQLException {
-    String deleteHostRating = "DELETE FROM HostRating WHERE ID=?;";
+    String deleteHostRating = "DELETE FROM Gr8BnBApplication.HostRating WHERE ID=?;";
 
     Connection connection = null;
     PreparedStatement statement = null;
     try {
       connection = connectionManager.getConnection();
       statement = connection.prepareStatement(deleteHostRating);
+      statement.setInt(1, hostRating.getId());
       statement.executeUpdate();
       return null;
     } catch (SQLException e) {
