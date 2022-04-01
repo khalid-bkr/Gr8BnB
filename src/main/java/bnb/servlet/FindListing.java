@@ -53,6 +53,8 @@ public class FindListing extends HttpServlet {
     			e.printStackTrace();
     			throw new IOException(e);
             }
+        	
+        	messages.put("previouslistingId", listingId);
         }
         req.setAttribute("listing", listing);
         

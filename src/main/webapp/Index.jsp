@@ -49,7 +49,7 @@
 				  <img src="<c:out value="${listing.getPictureUrl()}" />" />
 				  <div class="card-trip-infos">
 				    <div>
-				      <h2> <a href="findlisting?listingid=<c:out value="${listing.getName()}" />"> <c:out value="${listing.getName()}" /></a></h2>
+				      <h2> <a href="findlisting?listingId=<c:out value="${listing.getID()}" />"> <c:out value="${listing.getName()}" /></a></h2>
 				      <p>Hosted By: <a href="findhost?username=<c:out value="${listing.getHost().getUserName()}"/>"><c:out value="${listing.getHost().getUserName()}"/></a></p>
 	
 				    </div>
